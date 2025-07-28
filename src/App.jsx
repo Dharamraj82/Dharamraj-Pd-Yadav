@@ -9,7 +9,7 @@ import CircularText from "./uiComponents/CircularText";
 import CountUp from "./uiComponents/CountUp";
 import AboutMe from "./components/AboutMe";
 import Technology from "./pages/Technology";
-import Project from "./components/project";
+import Project from "./components/Project";
 import Projects from "./pages/Projects";
 import Page404 from "./pages/Page404";
 import Footer from "./pages/Footer";
