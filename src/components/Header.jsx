@@ -24,7 +24,7 @@ function Header() {
       <Link
       to={'/'}
         onClick={() => scrollToSection("home")}
-        className="bg-primary text-secondary text-3xl rounded-br-[40px] h-20 px-10 py-2 transition-all duration-500"
+        className="bg-primary uppercase text-secondary text-3xl rounded-br-[40px] h-20 px-10 py-2 transition-all duration-500"
         style={{ fontFamily: "Tektur", fontWeight: "700" }}
       >
         Dharamraj

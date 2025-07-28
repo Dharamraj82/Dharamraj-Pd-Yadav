@@ -20,7 +20,7 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowMainContent(true);
-    }, 100);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
