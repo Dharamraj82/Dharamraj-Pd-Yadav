@@ -3,7 +3,7 @@ import { FaExternalLinkAlt, FaCode, FaFileAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import GradientText from "../uiComponents/GradientText";
 
-const Projects = [
+const projects = [
   {
     title: "DOCBOOK",
     description:
