@@ -35,7 +35,7 @@ function Header() {
   const navLinks = [
     { name: "About", href: "/about" },
     { name: "Projects", href: "/projects" },
-    { name: "Blog", href: "/blogs&articals" },
+    { name: "Blogs", href: "/blogs&articals" },
     { name: "Contact", href: "/contact" },
   ];
 

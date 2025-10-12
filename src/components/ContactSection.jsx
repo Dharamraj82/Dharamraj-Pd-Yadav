@@ -42,22 +42,43 @@ function ContactSection() {
   };
 
   // Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setFormStatus({ loading: true, success: false, error: false });
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setFormStatus({ loading: true, success: false, error: false });
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log("Form Data:", formData);
+  try {
+    const response = await fetch('http://localhost:5000/send-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include', // Important for CORS with credentials
+      body: JSON.stringify(formData)
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
       setFormStatus({ loading: false, success: true, error: false });
       setFormData({ name: "", email: "", subject: "", message: "" });
-
-      // Reset success message after 3 seconds
+      
       setTimeout(() => {
         setFormStatus({ loading: false, success: false, error: false });
       }, 3000);
-    }, 2000);
-  };
+    } else {
+      throw new Error(data.error || 'Failed to send email');
+    }
+  } catch (err) {
+    console.error('Error:', err);
+    setFormStatus({ 
+      loading: false, 
+      success: false, 
+      error: true,
+      message: err.message 
+    });
+  }
+};
+
 
   // Contact Information
   const contactInfo = [
@@ -406,36 +427,11 @@ function ContactSection() {
                       ? "bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
                       : "bg-white border border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
                   } outline-none`}
-                  placeholder="dpy@123.com"
+                  placeholder="dpy123@gamil.com"
                 />
               </div>
 
-              {/* Subject Input */}
-              <div className="mb-6">
-                <label
-                  htmlFor="subject"
-                  className={`block text-sm font-semibold mb-2 ${
-                    isDark ? "text-gray-200" : "text-gray-700"
-                  }`}
-                >
-                  Subject
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  required
-                  className={`w-full px-4 py-3 rounded-xl transition-all ${
-                    isDark
-                      ? "bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
-                      : "bg-white border border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
-                  } outline-none`}
-                  placeholder="Project Inquiry"
-                />
-              </div>
-
+    
               {/* Message Textarea */}
               <div className="mb-6">
                 <label
