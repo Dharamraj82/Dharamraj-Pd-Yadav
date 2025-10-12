@@ -376,7 +376,7 @@ function AboutSection() {
             >
               {/* Replace with your actual image */}
               <img
-                src="public/profileImage.png"
+                src="./profileImage.png"
                 alt="Developer Profile"
                 className="w-full h-[500px] md:h-[600px] object-cover"
               />

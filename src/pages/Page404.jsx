@@ -3,7 +3,7 @@ import FuzzyText from "../uiComponents/FuzzyText";
 
 function Page404() {
   return (
-    <div className="min-h-[80vh] flex md:text-2xl justify-center items-center">
+    <div className="min-h-[80vh] flex justify-center items-center">
       <FuzzyText
         baseIntensity={0.2}
         hoverIntensity={0.5}
