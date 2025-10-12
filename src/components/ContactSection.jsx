@@ -47,7 +47,7 @@ const handleSubmit = async (e) => {
   setFormStatus({ loading: true, success: false, error: false });
 
   try {
-    const response = await fetch('http://localhost:5000/send-email', {
+    const response = await fetch('https://taking-response-from-portfolio.vercel.app/send-email', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
