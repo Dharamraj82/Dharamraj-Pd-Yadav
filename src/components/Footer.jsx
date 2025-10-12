@@ -2,9 +2,10 @@ import { motion } from "framer-motion";
 import {
   FaGithub,
   FaLinkedin,
-  FaTwitter,
   FaInstagram,
 } from "react-icons/fa";
+import { BsTwitterX } from "react-icons/bs";
+
 import { HiHeart } from "react-icons/hi";
 import { useTheme } from "../context/ThemeProvider";
 
@@ -16,34 +17,34 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   // Last updated date (you can make this dynamic)
-  const lastUpdated = "October 12, 2025";
+  const lastUpdated = "October 13, 2025";
 
   // Social Media Links
   const socialLinks = [
     {
-      name: "GitHub",
-      icon: FaGithub,
-      url: "https://github.com/yourusername",
-      color: isDark ? "hover:text-gray-300" : "hover:text-gray-900",
-    },
-    {
-      name: "LinkedIn",
-      icon: FaLinkedin,
-      url: "https://linkedin.com/in/yourusername",
-      color: "hover:text-blue-500",
-    },
-    {
-      name: "Twitter",
-      icon: FaTwitter,
-      url: "https://twitter.com/yourusername",
-      color: "hover:text-sky-400",
-    },
-    {
-      name: "Instagram",
-      icon: FaInstagram,
-      url: "https://instagram.com/yourusername",
-      color: "hover:text-pink-500",
-    }
+        name: "GitHub",
+        icon: FaGithub,
+        url: "https://github.com/dharamraj82",
+        color: isDark ? "hover:text-gray-300" : "hover:text-gray-900",
+      },
+      {
+        name: "LinkedIn",
+        icon: FaLinkedin,
+        url: "https://www.linkedin.com/in/dharamraj-prasad-yadav/",
+        color: "hover:text-blue-500",
+      },
+      {
+        name: "X (Twitter)",
+        icon: BsTwitterX,
+        url: "https://x.com/Dharamrajpdyadv",
+        color: "hover:text-zinc-900",
+      },
+      {
+        name: "Instagram",
+        icon: FaInstagram,
+        url: "https://www.instagram.com/dharamraj_pd_yadav/",
+        color: "hover:text-pink-500",
+      }
   ];
 
   return (
@@ -102,7 +103,7 @@ function Footer() {
                   href="/"
                   className={`text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-500 via-blue-600 to-blue-800 bg-clip-text text-transparent`}
                 >
-                  Dharamraj
+                  Dharamraj Prasad Yadav
                 </a>
               </motion.div>
               <p

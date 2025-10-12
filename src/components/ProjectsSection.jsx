@@ -7,6 +7,7 @@ import {
   SiExpress,
   SiTailwindcss,
   SiJavascript,
+  SiFramer ,
 } from "react-icons/si";
 import ProjectCard from "./ProjectCard";
 import { useTheme } from "../context/ThemeProvider";
@@ -17,58 +18,63 @@ function ProjectsSection() {
 
   // Projects Data
   const projects = [
-    {
+       {
       id: "project-docbook",
       title: "DOCBOOK - Doctor Appointment System",
       description:
         "A comprehensive doctor-patient appointment booking application built with MERN stack. Features real-time appointment scheduling, user authentication, profile management, and an intuitive dashboard for both doctors and patients.",
-      image:
-        "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80",
+      image: "./projectsImages/docbook.png",
       category: "Full Stack",
       techStack: [
         { name: "React.js", icon: SiReact },
         { name: "Node.js", icon: SiNodedotjs },
         { name: "MongoDB", icon: SiMongodb },
         { name: "Express", icon: SiExpress },
+        { name: "Joi (Validation)", icon: HiCode },
+        { name: "Framer-Motion", icon: SiFramer },
       ],
-      liveUrl: "https://docbook-demo.com",
-      githubUrl: "https://github.com/yourusername/docbook",
-      docsUrl: "https://docbook-docs.com",
+      liveUrl: "https://docbook-frontend-taupe.vercel.app/",
+      githubUrl: "https://github.com/Dharamraj82/DOCBOOK_Frontend",
+      docsUrl:
+        "https://github.com/Dharamraj82/DOCBOOK_Frontend/blob/main/README.md",
     },
     {
       id: "project-portfolio",
       title: "Personal Portfolio Website",
       description:
         "A modern, responsive portfolio website showcasing my projects and skills. Built with React.js and Tailwind CSS, featuring smooth animations, dark mode toggle, and an interactive project showcase with detailed case studies.",
-      image:
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80",
-      category: "Frontend",
+      image: "./projectsImages/portfolio.png",
+      category: "Frontend and Backend",
       techStack: [
         { name: "React.js", icon: SiReact },
         { name: "Tailwind", icon: SiTailwindcss },
-        { name: "JavaScript", icon: SiJavascript },
+        { name: "Express", icon: SiExpress },
+        { name: "Framer-Motion", icon: SiFramer },
+        { name: "Nodemailer", icon: HiCode },
       ],
-      liveUrl: "https://yourportfolio.com",
-      githubUrl: "https://github.com/yourusername/portfolio",
+      liveUrl: "https://dharamraj-pd-yadav.vercel.app/",
+      githubUrl: "https://github.com/Dharamraj82/Dharamraj-Pd-Yadav",
       docsUrl: null,
     },
     {
-      id: "project-ecommerce",
-      title: "E-Commerce Platform",
+      id: "project-notemaker",
+      title: "AI-Notetaker",
       description:
-        "A full-featured e-commerce platform with shopping cart functionality, payment integration, order management, and admin dashboard. Includes user authentication, product filtering, and real-time inventory tracking.",
-      image:
-        "https://images.unsplash.com/photo-1557821552-17105176677c?w=800&q=80",
+        "AI Notetaker is an AI-powered application that generates structured, clean, and visually clear notes from user prompts and uploaded files.The system is designed with simplicity, clarity, and productivity in mind.",
+      image: "./projectsImages/aINotetaker.png",
       category: "Full Stack",
       techStack: [
         { name: "React.js", icon: SiReact },
         { name: "Node.js", icon: SiNodedotjs },
         { name: "MongoDB", icon: SiMongodb },
         { name: "Express", icon: SiExpress },
+        { name: "Groq", icon: HiCode },
+        { name: "Nodemailer", icon: HiCode },
       ],
-      liveUrl: "https://ecommerce-demo.com",
-      githubUrl: "https://github.com/yourusername/ecommerce",
-      docsUrl: "https://ecommerce-docs.com",
+      liveUrl: "https://ai-notetaker-ten.vercel.app/",
+      githubUrl: "https://github.com/Dharamraj82/AI-Notetaker",
+      docsUrl:
+        "https://github.com/Dharamraj82/AI-Notetaker/blob/main/README.md",
     },
   ];
 
@@ -205,7 +211,7 @@ function ProjectsSection() {
             } shadow-lg hover:shadow-2xl`}
           >
             <HiLightningBolt size={24} />
-            View More on Projects
+            View More Projects
           </motion.a>
         </motion.div>
       </div>

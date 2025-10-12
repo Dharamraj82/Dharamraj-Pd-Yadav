@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
-import { FiGithub, FiExternalLink, FiFileText } from "react-icons/fi";
+import { FiGithub, FiExternalLink, FiFileText, FiChevronDown } from "react-icons/fi";
 import { useTheme } from "../context/ThemeProvider";
+import { useState } from "react";
 
 function ProjectCard({ project, index }) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <motion.div
@@ -13,6 +15,7 @@ function ProjectCard({ project, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
+      layout
       className={`group relative overflow-hidden rounded-2xl transition-all duration-300 ${
         isDark
           ? "bg-gray-800/50 backdrop-blur-md border border-gray-700/50 hover:border-blue-500/50"
@@ -120,14 +123,37 @@ function ProjectCard({ project, index }) {
           {project.title}
         </h3>
 
-        {/* Description */}
-        <p
-          className={`text-sm sm:text-base mb-4 line-clamp-3 ${
-            isDark ? "text-gray-300" : "text-gray-600"
-          }`}
-        >
-          {project.description}
-        </p>
+        {/* Expandable Description */}
+        <div className="mb-4">
+          <motion.p
+            layout
+            className={`text-sm sm:text-base leading-relaxed ${
+              isDark ? "text-gray-300" : "text-gray-600"
+            } ${!isExpanded ? "line-clamp-3" : ""}`}
+          >
+            {project.description}
+          </motion.p>
+
+          {/* Read More/Less Button */}
+          <motion.button
+            onClick={() => setIsExpanded(!isExpanded)}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`mt-2 inline-flex items-center gap-2 text-sm font-semibold transition-colors duration-300 ${
+              isDark
+                ? "text-blue-400 hover:text-blue-300"
+                : "text-blue-600 hover:text-blue-700"
+            }`}
+          >
+            <span>{isExpanded ? "Show Less" : "Read More"}</span>
+            <motion.div
+              animate={{ rotate: isExpanded ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <FiChevronDown size={16} />
+            </motion.div>
+          </motion.button>
+        </div>
 
         {/* Tech Stack */}
         <div className="mb-4">

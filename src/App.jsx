@@ -91,6 +91,8 @@ import Projects from "./pages/Projects";
 import Page404 from "./pages/Page404";
 import Blogs from "./pages/Blog";
 import Footer from "./components/Footer";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 function AppContent() {
   useLenis();
   const { theme } = useTheme();
@@ -214,8 +216,10 @@ function AppContent() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About/>} />
           <Route path="/projects" element={<Projects />} />
-          <Route path="/blogs&articals" element={<Blogs />} />
+          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/*" element={<Page404 />} />
         </Routes>
         <Footer/>

@@ -10,52 +10,49 @@ function Blog() {
   // Blog Posts Data
   const blogPosts = [
     {
-      id: "blog-mern-authentication",
-      title: "Building Secure Authentication in MERN Stack Applications",
+      id:1,
+      title: "How Much AI Has Upgraded",
       description:
-        "Learn how to implement JWT-based authentication with refresh tokens, secure password hashing using bcrypt, and best practices for protecting your MERN stack applications from common security vulnerabilities.",
-      image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=800&q=80",
-      category: "Web Development",
+        "AI has evolved over the years. Originally, it was simple rule-governed machinery but not it includes intelligent systems capable of learning, comprehending, and creating. Advanced AI systems can identify visual information, process and respond to natural languages, compose written material, generate artworks, operate vehicles, and help with intricate decision processes. Due to the growth of scientific fields like machine learning, deep learning, and generative AI, many things that we once thought were the stuff of sci-fi have become reality, helping speed up and improve the quality of our work in daily life.",
+      image: "https://plus.unsplash.com/premium_photo-1683121710572-7723bd2e235d?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8QXJ0aWZpY2lhbCUyMEludGVsbGlnZW5jZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&q=60&w=600",
+      category: "Artificial Intelligence (AI)",
       date: "2025-10-05",
-      readTime: "8 min read",
+      readTime: "3 min read",
       author: {
         name: "Dharamraj",
         role: "Full Stack Developer",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80",
+        avatar: "./profileImage.png",
       },
-      url: "#",
     },
     {
-      id: "blog-react-performance",
-      title: "React Performance Optimization: Tips and Tricks",
+      id:2,
+      title: "MERN Developer in Today’s Tech Market",
       description:
-        "Discover essential techniques to boost your React application's performance including code splitting, lazy loading, memoization, virtual scrolling, and proper state management strategies for faster load times.",
-      image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&q=80",
-      category: "React.js",
+        "New graduates entering the tech industry typically have MERN stack skills. Given the current highly competitive job market and accelerated AI disruption, the situation has changed. Knowing only MERN stack will not cut it. Prospective employers want candidates knowledgeable in microservices, AWS, Docker, and CI/CD, while also understanding AI, scalability, and optimization. Developers need to build practical projects and keep learning to remain relevant. In today’s competitive landscape, one must engage in continual learning to obtain meaningful employment.",
+      image: "https://images.unsplash.com/photo-1653539465770-2d7120d830bb?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29sbGVnZSUyMGNvZGVyfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=600",
+      category: "My Issue",
       date: "2025-09-28",
-      readTime: "10 min read",
+      readTime: "3 min read",
       author: {
-        name: "Your Name",
+        name: "Dharamraj",
         role: "Full Stack Developer",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80",
+        avatar: "./profileImage.png",
       },
-      url: "#",
     },
     {
-      id: "blog-mongodb-aggregation",
-      title: "Mastering MongoDB Aggregation Pipeline",
+      id:3,
+      title: "My Wipro WILP Interview Experience",
       description:
-        "Deep dive into MongoDB's powerful aggregation framework. Learn how to perform complex data transformations, filtering, grouping, and analysis with real-world examples and performance optimization tips.",
-      image: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=800&q=80",
-      category: "Database",
-      date: "2025-09-20",
-      readTime: "12 min read",
+        "I have recently completed the Wipro WILP program. Nevertheless, every interview presents an opportunity to engage in thoughtful reflection. After the assignment and business communication test, the interview turned its focus to my final year project, as well as the group and individual work. They inquired about my problem handling, the challenges I encountered in collaboration, and what I did in instances when my teammate couldn’t grasp my concepts. A little about SDLC’s foundational principles was touched upon. I believe anyone can pass interviews and achieve success in their profession through effective communication, project transparency, and a desire to learn.",
+      image: "https://pbs.twimg.com/profile_images/1587084627428069376/o05qu0WH_400x400.jpg",
+      category: "Bca to MNC",
+      date: "2025-09-25",
+      readTime: "3 min read",
       author: {
-        name: "Your Name",
+        name: "Dharamraj",
         role: "Full Stack Developer",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&q=80",
+        avatar: "./profileImage.png",
       },
-      url: "#",
     },
  
   ];
@@ -141,7 +138,7 @@ function Blog() {
                 isDark ? "text-purple-400" : "text-purple-600"
               }`}
             >
-              Blog & Articles
+              My Blogs
             </span>
           </motion.div>
 

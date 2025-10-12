@@ -14,7 +14,7 @@ import {
 import { BsTwitterX } from "react-icons/bs";
 import { useTheme } from "../context/ThemeProvider";
 
-function ContactSection() {
+function Contact() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
@@ -131,7 +131,7 @@ const handleSubmit = async (e) => {
   return (
     <section
       id="contact"
-      className={`relative py-20 md:py-32 overflow-hidden`}
+      className={`relative w-full py-20 md:py-32 overflow-hidden`}
     >
       {/* Animated Background Pattern */}
       <div className="absolute inset-0 opacity-20">
@@ -515,4 +515,4 @@ const handleSubmit = async (e) => {
   );
 }
 
-export default ContactSection;
+export default Contact;
