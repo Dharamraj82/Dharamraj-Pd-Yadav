@@ -9,6 +9,7 @@ import {
   SiJavascript,
   SiHtml5,
   SiCss3,
+  SiFramer
 } from "react-icons/si";
 import { RiGeminiFill } from "react-icons/ri";
 import { useTheme } from "../context/ThemeProvider";
