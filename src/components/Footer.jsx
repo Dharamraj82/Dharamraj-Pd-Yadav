@@ -17,70 +17,44 @@ function Footer() {
   const currentYear = new Date().getFullYear();
 
   // Last updated date (you can make this dynamic)
-  const lastUpdated = "October 13, 2025";
+  const lastUpdated = "May 29, 2026.";
 
   // Social Media Links
   const socialLinks = [
     {
-        name: "GitHub",
-        icon: FaGithub,
-        url: "https://github.com/dharamraj82",
-        color: isDark ? "hover:text-gray-300" : "hover:text-gray-900",
-      },
-      {
-        name: "LinkedIn",
-        icon: FaLinkedin,
-        url: "https://www.linkedin.com/in/dharamraj-prasad-yadav/",
-        color: "hover:text-blue-500",
-      },
-      {
-        name: "X (Twitter)",
-        icon: BsTwitterX,
-        url: "https://x.com/Dharamrajpdyadv",
-        color: "hover:text-zinc-900",
-      },
-      {
-        name: "Instagram",
-        icon: FaInstagram,
-        url: "https://www.instagram.com/dharamraj_pd_yadav/",
-        color: "hover:text-pink-500",
-      }
+      name: "GitHub",
+      icon: FaGithub,
+      url: "https://github.com/dharamraj82",
+      hoverClass: "hover:from-gray-700 hover:to-black hover:text-white",
+    },
+    {
+      name: "LinkedIn",
+      icon: FaLinkedin,
+      url: "https://www.linkedin.com/in/dharamraj-prasad-yadav/",
+      hoverClass: "hover:from-[#0A66C2] hover:to-[#004182] hover:text-white",
+    },
+    {
+      name: "X (Twitter)",
+      icon: BsTwitterX,
+      url: "https://x.com/Dharamrajpdyadv",
+      hoverClass: "hover:from-gray-700 hover:to-black hover:text-white",
+    },
+    {
+      name: "Instagram",
+      icon: FaInstagram,
+      url: "https://www.instagram.com/dharamraj_pd_yadav/",
+      hoverClass: "hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:text-white",
+    }
   ];
 
   return (
     <footer className={`relative w-full overflow-hidden`}>
       {/* Divider */}
       <div
-        className={`w-full h-[2px] ${
-          isDark ? "bg-blue-700" : "bg-blue-300"
-        }`}
+        className={`w-full h-[1px] bg-gradient-to-r from-transparent via-primary/50 to-transparent`}
       />
 
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-10">
-        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern
-              id="footerGrid"
-              width="40"
-              height="40"
-              patternUnits="userSpaceOnUse"
-            >
-              <circle
-                cx="20"
-                cy="20"
-                r="1"
-                fill={
-                  isDark ? "rgba(59, 130, 246, 0.5)" : "rgba(59, 130, 246, 0.3)"
-                }
-              />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#footerGrid)" />
-        </svg>
-      </div>
-
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
+      <div className="relative max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
         {/* Main Footer Content */}
         <div className="flex flex-col md:flex-row w-full items-start md:items-center justify-between gap-8 md:gap-4">
           {/* Left Section */}
@@ -101,7 +75,7 @@ function Footer() {
               >
                 <a
                   href="/"
-                  className={`text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-500 via-blue-600 to-blue-800 bg-clip-text text-transparent`}
+                  className={`text-2xl md:text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent`}
                 >
                   Dharamraj Prasad Yadav
                 </a>
@@ -166,64 +140,59 @@ function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className={`flex items-center gap-4 p-4 rounded-2xl ${
-                isDark
-                  ? "bg-gray-800/30 backdrop-blur-md border border-gray-700/50"
-                  : "bg-white/50 backdrop-blur-md border border-gray-200"
-              } shadow-lg`}
+              className={`flex items-center gap-4 p-4 rounded-3xl glass shadow-[0_0_15px_rgba(99,102,241,0.1)]`}
             >
               {socialLinks.map((social, index) => (
-                <motion.a
+                <a
                   key={index}
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.2, y: -5 }}
-                  whileTap={{ scale: 0.9 }}
-                  className={`transition-all ${
-                    isDark ? "text-gray-400" : "text-gray-600"
-                  } ${social.color}`}
+                  className={`group relative overflow-hidden flex items-center justify-center shrink-0 w-12 h-12 mx-auto aspect-square rounded-full transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 hover:-translate-y-2 hover:z-10 active:scale-95 ${social.hoverClass} ${
+                    isDark
+                      ? "bg-gradient-to-b from-slate-700 to-slate-800 text-gray-300 border-t border-white/20 border-x border-white/5 shadow-[0_4px_10px_rgba(0,0,0,0.3)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.5)]"
+                      : "bg-gradient-to-b from-slate-100 to-slate-200 text-gray-600 border-t border-white/80 border-x border-white/40 shadow-[0_4px_10px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.2)]"
+                  }`}
                   aria-label={social.name}
                 >
-                  <social.icon size={24} />
-                </motion.a>
+                  <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 to-transparent rounded-t-full pointer-events-none"></div>
+                  <social.icon size={20} className={`relative z-10 transition-colors group-hover:text-white`} />
+                </a>
               ))}
             </motion.div>
 
             {/* Scroll to Top Button */}
-            <motion.button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              whileHover={{ scale: 1.1, y: -5 }}
-              whileTap={{ scale: 0.9 }}
-              className={`h-10 w-10 flex items-center justify-center p-2 rounded-full transition-all ${
-                isDark
-                  ? "bg-blue-600 hover:bg-blue-500 text-white"
-                  : "bg-blue-600 hover:bg-blue-700 text-white"
-              } shadow-lg hover:shadow-xl`}
-              aria-label="Scroll to top"
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                className={`group relative overflow-hidden h-12 w-12 flex items-center justify-center rounded-full transition-all duration-300 hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none ${
+                  isDark
+                    ? "bg-gradient-to-b from-primary/90 to-primary/80 text-white border-t border-white/40 border-x border-white/20 border-b-0 shadow-[0_4px_0_rgba(194,65,12,0.8),_0_8px_15px_rgba(0,0,0,0.4)] hover:shadow-[0_2px_0_rgba(194,65,12,0.8),_0_4px_8px_rgba(0,0,0,0.3)]"
+                    : "bg-gradient-to-b from-primary/90 to-primary/80 text-white border-t border-white/40 border-x border-white/20 border-b-0 shadow-[0_4px_0_rgba(194,65,12,0.8),_0_8px_15px_rgba(0,0,0,0.2)] hover:shadow-[0_2px_0_rgba(194,65,12,0.8),_0_4px_8px_rgba(0,0,0,0.15)]"
+                }`}
+                aria-label="Scroll to top"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 10l7-7m0 0l7 7m-7-7v18"
-                />
-              </svg>
-            </motion.button>
+                <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 to-transparent rounded-t-full pointer-events-none"></div>
+                <svg
+                  className="w-5 h-5 relative z-10"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 10l7-7m0 0l7 7m-7-7v18"
+                  />
+                </svg>
+              </button>
+            </motion.div>
           </div>
         </div>
       </div>

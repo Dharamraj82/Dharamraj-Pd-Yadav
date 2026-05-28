@@ -84,42 +84,9 @@ function Blog() {
         </svg>
       </div>
 
-      {/* Floating Decorative Elements */}
-      <motion.div
-        animate={{
-          y: [0, -25, 0],
-          rotate: [0, 8, 0],
-        }}
-        transition={{
-          duration: 7,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className={`absolute top-32 left-20 text-6xl opacity-10 ${
-          isDark ? "text-purple-400" : "text-purple-600"
-        }`}
-      >
-        ✍️
-      </motion.div>
 
-      <motion.div
-        animate={{
-          y: [0, 20, 0],
-          rotate: [0, -8, 0],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className={`absolute bottom-20 right-20 text-5xl opacity-10 ${
-          isDark ? "text-pink-400" : "text-pink-600"
-        }`}
-      >
-        📝
-      </motion.div>
 
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
           <motion.div
@@ -130,12 +97,12 @@ function Blog() {
             className="flex items-center justify-center gap-2 mb-6"
           >
             <HiPencilAlt
-              className={isDark ? "text-purple-400" : "text-purple-600"}
+              className={isDark ? "text-primary" : "text-primary"}
               size={32}
             />
             <span
               className={`text-sm md:text-base font-semibold uppercase tracking-wider ${
-                isDark ? "text-purple-400" : "text-purple-600"
+                isDark ? "text-primary" : "text-primary"
               }`}
             >
               My Blogs
@@ -155,8 +122,8 @@ function Blog() {
             <span
               className={
                 isDark
-                  ? "bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
-                  : "bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
+                  ? "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+                  : "bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
               }
             >
               Insights & Tutorials

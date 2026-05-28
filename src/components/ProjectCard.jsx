@@ -6,249 +6,160 @@ import { useState } from "react";
 function ProjectCard({ project, index }) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
+  const isEven = index % 2 === 0;
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <motion.div
       id={project.id}
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6 }}
       layout
-      className={`group relative overflow-hidden rounded-2xl transition-all duration-300 ${
-        isDark
-          ? "bg-gray-800/50 backdrop-blur-md border border-gray-700/50 hover:border-blue-500/50"
-          : "bg-white/80 backdrop-blur-md border border-gray-200 hover:border-blue-400"
-      } shadow-lg hover:shadow-2xl`}
+      className={`group relative flex flex-col ${
+        isEven ? "md:flex-row" : "md:flex-row-reverse"
+      } w-full overflow-hidden rounded-3xl transition-all duration-300 hover:-translate-y-1 ${
+        isDark 
+          ? "bg-[#111111] border border-white/5 hover:border-primary/40 shadow-[0_4px_20px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_30px_rgba(234,88,12,0.15)]" 
+          : "bg-white border border-slate-200 hover:border-primary/50 shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgba(234,88,12,0.15)]"
+      }`}
     >
-      {/* Project Image */}
-      <div className="relative overflow-hidden h-56 sm:h-64">
-        <motion.img
-          whileHover={{ scale: 1.1 }}
-          transition={{ duration: 0.4 }}
-          src={project.image}
-          alt={project.title}
-          className="w-full h-full object-cover"
-        />
-
-        {/* Overlay on Hover */}
-        <div
-          className={`absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 ${
-            isDark
-              ? "bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent"
-              : "bg-gradient-to-t from-white via-white/80 to-transparent"
-          }`}
-        />
-
-        {/* Action Buttons Overlay */}
-        <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          {project.liveUrl && (
-            <motion.a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.1, y: -5 }}
-              whileTap={{ scale: 0.95 }}
-              className={`p-3 rounded-full backdrop-blur-md ${
-                isDark
-                  ? "bg-blue-500/90 hover:bg-blue-600 text-white"
-                  : "bg-blue-600/90 hover:bg-blue-700 text-white"
-              } shadow-lg`}
-              title="Live Preview"
-            >
-              <FiExternalLink size={20} />
-            </motion.a>
-          )}
-
-          {project.githubUrl && (
-            <motion.a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.1, y: -5 }}
-              whileTap={{ scale: 0.95 }}
-              className={`p-3 rounded-full backdrop-blur-md ${
-                isDark
-                  ? "bg-gray-700/90 hover:bg-gray-600 text-white"
-                  : "bg-gray-800/90 hover:bg-gray-900 text-white"
-              } shadow-lg`}
-              title="View Code"
-            >
-              <FiGithub size={20} />
-            </motion.a>
-          )}
-
-          {project.docsUrl && (
-            <motion.a
-              href={project.docsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.1, y: -5 }}
-              whileTap={{ scale: 0.95 }}
-              className={`p-3 rounded-full backdrop-blur-md ${
-                isDark
-                  ? "bg-purple-500/90 hover:bg-purple-600 text-white"
-                  : "bg-purple-600/90 hover:bg-purple-700 text-white"
-              } shadow-lg`}
-              title="Documentation"
-            >
-              <FiFileText size={20} />
-            </motion.a>
-          )}
+      {/* Project Image Section */}
+      <div className="relative overflow-hidden w-full md:w-5/12 shrink-0 h-56 md:h-auto">
+        <div className="w-full h-full">
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover object-center"
+          />
         </div>
 
-        {/* Category Badge */}
-        <div className="absolute top-4 right-4">
-          <span
-            className={`px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-md ${
-              isDark ? "bg-blue-500/80 text-white" : "bg-blue-600/80 text-white"
-            }`}
-          >
+        {/* Category Label overlay on image for mobile, hidden on desktop */}
+        <div className="absolute top-4 left-4 md:hidden">
+          <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white border border-white/20">
             {project.category}
           </span>
         </div>
       </div>
 
-      {/* Project Content */}
-      <div className="p-6">
+      {/* Project Text Content */}
+      <div className={`p-6 md:p-8 flex flex-col justify-center grow w-full md:w-7/12 relative z-0`}>
+        
+        {/* Category Label (Desktop) */}
+        <div className="hidden md:flex items-center gap-2 mb-3">
+          <span className="w-6 h-[2px] bg-primary rounded-full"></span>
+          <span className="text-primary font-bold text-[11px] tracking-widest uppercase">
+            {project.category}
+          </span>
+        </div>
+
         {/* Title */}
-        <h3
-          className={`text-xl sm:text-2xl font-bold mb-3 transition-colors ${
-            isDark
-              ? "text-white group-hover:text-blue-400"
-              : "text-gray-900 group-hover:text-blue-600"
-          }`}
-        >
+        <h3 className={`text-xl md:text-2xl lg:text-3xl font-bold mb-3 transition-colors duration-300 ${
+          isDark ? "text-white group-hover:text-primary" : "text-slate-900 group-hover:text-primary"
+        }`}>
           {project.title}
         </h3>
 
         {/* Expandable Description */}
-        <div className="mb-4">
+        <div className="mb-6">
           <motion.p
             layout
-            className={`text-sm sm:text-base leading-relaxed ${
-              isDark ? "text-gray-300" : "text-gray-600"
-            } ${!isExpanded ? "line-clamp-3" : ""}`}
+            className={`text-sm md:text-base leading-relaxed ${
+              isDark ? "text-slate-400" : "text-slate-600"
+            } ${!isExpanded ? "line-clamp-2" : ""}`}
           >
             {project.description}
           </motion.p>
-
-          {/* Read More/Less Button */}
+          
           <motion.button
             onClick={() => setIsExpanded(!isExpanded)}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className={`mt-2 inline-flex items-center gap-2 text-sm font-semibold transition-colors duration-300 ${
-              isDark
-                ? "text-blue-400 hover:text-blue-300"
-                : "text-blue-600 hover:text-blue-700"
-            }`}
+            className="mt-2 inline-flex items-center gap-1.5 text-[13px] font-bold text-primary hover:text-orange-500 transition-colors"
           >
             <span>{isExpanded ? "Show Less" : "Read More"}</span>
-            <motion.div
-              animate={{ rotate: isExpanded ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <FiChevronDown size={16} />
+            <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.3 }}>
+              <FiChevronDown size={14} />
             </motion.div>
           </motion.button>
         </div>
 
-        {/* Tech Stack */}
-        <div className="mb-4">
-          <p
-            className={`text-xs font-semibold mb-2 uppercase tracking-wide ${
-              isDark ? "text-gray-400" : "text-gray-500"
-            }`}
-          >
-            Tech Stack
-          </p>
+        {/* Tech Stack Pills */}
+        <div className="mb-6">
           <div className="flex flex-wrap gap-2">
             {project.techStack.map((tech, techIndex) => (
-              <motion.span
+              <span
                 key={techIndex}
-                whileHover={{ scale: 1.05, y: -2 }}
-                className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${
+                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all duration-300 ${
                   isDark
-                    ? "bg-gray-700/80 text-blue-300 border border-gray-600"
-                    : "bg-blue-50 text-blue-700 border border-blue-200"
+                    ? "bg-white/5 text-slate-300 border border-white/10"
+                    : "bg-slate-100 text-slate-600 border border-slate-200"
                 }`}
               >
-                {tech.icon && <tech.icon size={14} />}
+                {tech.icon && <tech.icon size={12} className={isDark ? 'opacity-70' : 'opacity-60'} />}
                 {tech.name}
-              </motion.span>
+              </span>
             ))}
           </div>
         </div>
 
-        {/* Links Row */}
-        <div className="flex items-center gap-4 pt-4 border-t border-gray-700/50 dark:border-gray-600">
+        {/* Action Buttons with 3D Effect */}
+        <div className="mt-auto flex items-center gap-3">
           {project.liveUrl && (
-            <a
+            <motion.a
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className={`flex items-center gap-2 text-sm font-medium transition-colors ${
+              className={`group relative overflow-hidden flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none ${
                 isDark
-                  ? "text-blue-400 hover:text-blue-300"
-                  : "text-blue-600 hover:text-blue-700"
+                  ? "bg-gradient-to-b from-primary/80 to-primary/60 text-white border-t border-white/30 border-x border-white/10 border-b-0 shadow-[0_4px_0_rgba(194,65,12,0.8),_0_8px_15px_rgba(0,0,0,0.4)] hover:shadow-[0_2px_0_rgba(194,65,12,0.8),_0_4px_8px_rgba(0,0,0,0.3)]"
+                  : "bg-gradient-to-b from-primary/90 to-primary/80 text-white border-t border-white/40 border-x border-white/20 border-b-0 shadow-[0_4px_0_rgba(194,65,12,0.8),_0_8px_15px_rgba(0,0,0,0.2)] hover:shadow-[0_2px_0_rgba(194,65,12,0.8),_0_4px_8px_rgba(0,0,0,0.15)]"
               }`}
+              title="Live Preview"
             >
-              <FiExternalLink size={16} />
-              Live Demo
-            </a>
+              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 to-transparent rounded-t-lg pointer-events-none"></div>
+              <FiExternalLink size={16} className="relative z-10" />
+              <span className="relative z-10" style={{ textShadow: isDark ? '0 1px 2px rgba(0,0,0,0.4)' : 'none' }}>Live Preview</span>
+            </motion.a>
           )}
-
+          
           {project.githubUrl && (
-            <a
+            <motion.a
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className={`flex items-center gap-2 text-sm font-medium transition-colors ${
-                isDark
-                  ? "text-gray-400 hover:text-gray-300"
-                  : "text-gray-600 hover:text-gray-700"
+              className={`group relative overflow-hidden flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none ${
+                isDark 
+                  ? "bg-gradient-to-b from-slate-700 to-slate-800 text-white border-t border-white/20 border-x border-white/5 border-b-0 shadow-[0_4px_0_rgba(30,41,59,1),_0_8px_15px_rgba(0,0,0,0.4)] hover:shadow-[0_2px_0_rgba(30,41,59,1),_0_4px_8px_rgba(0,0,0,0.3)]" 
+                  : "bg-gradient-to-b from-slate-100 to-slate-200 text-slate-800 border-t border-white/80 border-x border-white/40 border-b-0 shadow-[0_4px_0_rgba(203,213,225,1),_0_8px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_2px_0_rgba(203,213,225,1),_0_4px_8px_rgba(0,0,0,0.05)]"
               }`}
+              title="View Code"
             >
-              <FiGithub size={16} />
-              Code
-            </a>
+              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 to-transparent rounded-t-lg pointer-events-none"></div>
+              <FiGithub size={16} className="relative z-10" />
+              <span className="relative z-10">Code</span>
+            </motion.a>
           )}
 
           {project.docsUrl && (
-            <a
+            <motion.a
               href={project.docsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className={`flex items-center gap-2 text-sm font-medium transition-colors ${
-                isDark
-                  ? "text-purple-400 hover:text-purple-300"
-                  : "text-purple-600 hover:text-purple-700"
+              className={`group relative overflow-hidden flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none ${
+                isDark 
+                  ? "bg-gradient-to-b from-slate-700 to-slate-800 text-white border-t border-white/20 border-x border-white/5 border-b-0 shadow-[0_4px_0_rgba(30,41,59,1),_0_8px_15px_rgba(0,0,0,0.4)] hover:shadow-[0_2px_0_rgba(30,41,59,1),_0_4px_8px_rgba(0,0,0,0.3)]" 
+                  : "bg-gradient-to-b from-slate-100 to-slate-200 text-slate-800 border-t border-white/80 border-x border-white/40 border-b-0 shadow-[0_4px_0_rgba(203,213,225,1),_0_8px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_2px_0_rgba(203,213,225,1),_0_4px_8px_rgba(0,0,0,0.05)]"
               }`}
+              title="Documentation"
             >
-              <FiFileText size={16} />
-              Docs
-            </a>
+              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 to-transparent rounded-t-lg pointer-events-none"></div>
+              <FiFileText size={16} className="relative z-10" />
+              <span className="relative z-10">Docs</span>
+            </motion.a>
           )}
         </div>
-      </div>
 
-      {/* Animated Border Effect */}
-      <div
-        className={`absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none ${
-          isDark
-            ? "bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-blue-500/20"
-            : "bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-blue-400/20"
-        }`}
-        style={{
-          padding: "2px",
-          WebkitMask:
-            "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-          WebkitMaskComposite: "xor",
-          maskComposite: "exclude",
-        }}
-      />
+      </div>
     </motion.div>
   );
 }

@@ -81,148 +81,93 @@
 // }
 
 // export default App;
+import React, { Suspense, lazy } from "react";
 import { motion } from "framer-motion";
 import { ThemeProvider, useTheme } from "./context/ThemeProvider";
 import Header from "./components/Header";
 import useLenis from "./context/useLenis";
-import Home from "./pages/Home";
 import { Routes, Route } from "react-router-dom";
-import Projects from "./pages/Projects";
-import Page404 from "./pages/Page404";
-import Blogs from "./pages/Blog";
 import Footer from "./components/Footer";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
+
+import BackgroundAnimation from "./components/BackgroundAnimation";
+
+// Lazy loading pages
+const Home = lazy(() => import("./pages/Home"));
+const Projects = lazy(() => import("./pages/Projects"));
+const Page404 = lazy(() => import("./pages/Page404"));
+const Blogs = lazy(() => import("./pages/Blog"));
+const About = lazy(() => import("./pages/About"));
+const Certifications = lazy(() => import("./pages/Certifications"));
+const Contact = lazy(() => import("./pages/Contact"));
+
+// Fallback loader component (Hero Skeleton)
+const PageLoader = () => {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  
+  return (
+    <div className="min-h-screen flex items-center justify-center w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 animate-pulse">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+        {/* Left Side: Text Skeleton */}
+        <div className="flex flex-col justify-center items-start order-2 lg:order-1">
+          {/* Trust Badge Skeleton */}
+          <div className={`w-48 h-10 rounded-full mb-6 ${isDark ? 'bg-primary/20' : 'bg-primary/10'}`}></div>
+          
+          {/* Main Heading Skeleton */}
+          <div className={`w-32 h-12 md:h-16 rounded-lg mb-2 ${isDark ? 'bg-white/10' : 'bg-slate-300'}`}></div>
+          <div className={`w-3/4 h-14 md:h-20 rounded-xl mb-6 ${isDark ? 'bg-white/10' : 'bg-slate-300'}`}></div>
+          
+          {/* Description Skeleton */}
+          <div className={`w-full max-w-lg h-24 rounded-xl mb-10 ${isDark ? 'bg-white/5' : 'bg-slate-200'}`}></div>
+          
+          {/* Buttons Skeleton */}
+          <div className="flex flex-wrap items-center gap-4">
+            <div className={`w-36 h-12 rounded-full ${isDark ? 'bg-primary/30' : 'bg-primary/20'}`}></div>
+            <div className={`w-36 h-12 rounded-full ${isDark ? 'bg-white/10' : 'bg-slate-300'}`}></div>
+          </div>
+        </div>
+
+        {/* Right Side: Image Skeleton */}
+        <div className="order-1 lg:order-2 flex justify-center lg:justify-end items-center">
+          <div className={`w-72 h-72 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] rounded-[30%_70%_70%_30%/30%_30%_70%_70%] ${isDark ? 'bg-white/5 border-white/10' : 'bg-slate-200 border-slate-300'} border`}></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 function AppContent() {
   useLenis();
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
   return (
-    <div className="min-h-screen dark:bg-gray-900 bg-white transition-colors duration-500">
+    <div className={`min-h-screen transition-colors duration-500 ${isDark ? 'bg-darkBg text-white' : 'bg-slate-50 text-slate-900'}`}>
       <section className="relative w-full min-h-screen flex items-center justify-center flex-col overflow-hidden">
-        {/* SVG Background Pattern */}
-        <div className="absolute inset-0 z-0">
-          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              {/* Grid Pattern */}
-              <pattern
-                id="grid"
-                width="40"
-                height="40"
-                patternUnits="userSpaceOnUse"
-              >
-                <path
-                  d="M 40 0 L 0 0 0 40"
-                  fill="none"
-                  stroke={
-                    isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.05)"
-                  }
-                  strokeWidth="1"
-                />
-              </pattern>
+        
+        {/* Modern Background with Ribbons/Waves */}
+        <BackgroundAnimation />
 
-              {/* Brackets */}
-              <pattern
-                id="brackets"
-                width="100"
-                height="100"
-                patternUnits="userSpaceOnUse"
-              >
-                <text
-                  x="20"
-                  y="50"
-                  fontSize="40"
-                  fill={
-                    isDark
-                      ? "rgba(59, 130, 246, 0.1)"
-                      : "rgba(59, 130, 246, 0.08)"
-                  }
-                  fontFamily="monospace"
-                  fontWeight="bold"
-                >
-                  {"{ }"}
-                </text>
-              </pattern>
+        {/* Gradient Overlay for subtle texture */}
+        <div className={`fixed inset-0 z-0 opacity-50 ${isDark ? 'bg-[url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.03\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")]' : 'bg-[url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23000000\' fill-opacity=\'0.02\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")]'}`} />
 
-              {/* Dots */}
-              <pattern
-                id="dots"
-                width="20"
-                height="20"
-                patternUnits="userSpaceOnUse"
-              >
-                <circle
-                  cx="2"
-                  cy="2"
-                  r="1"
-                  fill={
-                    isDark
-                      ? "rgba(147, 197, 253, 0.2)"
-                      : "rgba(59, 130, 246, 0.15)"
-                  }
-                />
-              </pattern>
-            </defs>
-
-            {/* Apply patterns */}
-            <rect width="100%" height="100%" fill="url(#grid)" />
-            <rect width="100%" height="100%" fill="url(#brackets)" />
-            <rect width="100%" height="100%" fill="url(#dots)" />
-          </svg>
-
-          {/* Gradient Overlay */}
-          <div
-            className={`absolute inset-0 ${
-              isDark
-                ? "bg-gradient-to-br from-blue-900/60 via-blue-500/20 to-purple-900/60"
-                : "bg-gradient-to-br from-blue-300/60 via-blue-500/20 to-purple-300/60"
-            }`}
-          />
+        <div className="relative z-10 w-full flex flex-col min-h-screen">
+          <Header />
+          <main className="flex-grow">
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/certifications" element={<Certifications />} />
+                <Route path="/blogs" element={<Blogs />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/*" element={<Page404 />} />
+              </Routes>
+            </Suspense>
+          </main>
+          <Footer />
         </div>
-
-        {/* Floating Code Elements */}
-        <motion.div
-          animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className={`absolute top-20 left-10 text-6xl opacity-20 ${
-            isDark ? "text-blue-400" : "text-blue-600"
-          }`}
-        >
-          &lt;/&gt;
-        </motion.div>
-
-        <motion.div
-          animate={{ y: [0, 20, 0], rotate: [0, -5, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className={`absolute bottom-32 right-20 text-5xl opacity-20 ${
-            isDark ? "text-purple-400" : "text-purple-600"
-          }`}
-        >
-          {"{"}
-        </motion.div>
-
-        <motion.div
-          animate={{ y: [0, -15, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }}
-          className={`absolute top-1/3 right-10 text-4xl opacity-20 ${
-            isDark ? "text-green-400" : "text-green-600"
-          }`}
-        >
-          {"()"}
-        </motion.div>
-
-        {/* Main Content */}
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About/>} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/*" element={<Page404 />} />
-        </Routes>
-        <Footer/>
       </section>
     </div>
   );

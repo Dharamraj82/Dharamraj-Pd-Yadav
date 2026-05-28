@@ -4,9 +4,11 @@ import { HiMenuAlt3, HiX } from "react-icons/hi";
 import { BsSunFill, BsMoonStarsFill } from "react-icons/bs";
 import { useTheme } from "../context/ThemeProvider";
 import { Link } from "react-router-dom";
+
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [themeHovered, setThemeHovered] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === "dark";
 
@@ -35,6 +37,7 @@ function Header() {
   const navLinks = [
     { name: "About", href: "/about" },
     { name: "Projects", href: "/projects" },
+    { name: "Certifications", href: "/certifications" },
     { name: "Blogs", href: "/blogs" },
     { name: "Contact", href: "/contact" },
   ];
@@ -49,15 +52,11 @@ function Header() {
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="fixed top-0 left-0 right-0 z-50 flex justify-center items-center py-4"
+        transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
+        className={`fixed top-0 left-0 right-0 z-50 flex justify-center items-center py-4 transition-all duration-300 ${scrolled ? 'py-2' : 'py-6'}`}
       >
         <nav
-          className={`w-[90%] md:w-[85%] lg:w-[80%] rounded-2xl flex justify-between items-center px-4 sm:px-6 lg:px-8 h-16 md:h-20 transition-all duration-300 ${
-            isDark
-              ? "bg-white/10 backdrop-blur-md border border-white/20 shadow-xl"
-              : "bg-white/15 backdrop-blur-md border border-white/30 shadow-lg"
-          }`}
+          className={`w-[95%] md:w-[85%] lg:w-[75%] rounded-full flex justify-between items-center px-6 sm:px-8 h-16 md:h-18 transition-all duration-300 glass border-t border-white/40 ${scrolled ? 'shadow-2xl shadow-primary/10' : ''}`}
         >
           {/* Logo */}
           <motion.div
@@ -68,19 +67,18 @@ function Header() {
           >
             <a
               href="/"
-              className={`text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-500 via-blue-600 to-blue-800 bg-clip-text text-transparent`}
+              className={`text-2xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent hover:scale-105 transition-transform duration-300`}
             >
-              Dharamraj{" "}
+              Dharamraj.
             </a>
           </motion.div>
 
-          {/* Desktop Navigation */}
           {/* Desktop Navigation */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="hidden md:flex items-center space-x-1 lg:space-x-2"
+            className="hidden md:flex items-center space-x-2 lg:space-x-4"
           >
             {navLinks.map((link, index) => (
               <motion.div
@@ -93,64 +91,99 @@ function Header() {
               >
                 <Link
                   to={link.href}
-                  className={`px-3 lg:px-4 py-2 rounded-lg text-sm lg:text-base font-medium transition-all ${
+                  className={`relative px-4 py-2 rounded-full text-sm lg:text-base font-medium transition-all group overflow-hidden ${
                     isDark
-                      ? "text-gray-200 hover:text-white hover:bg-white/10"
-                      : "text-gray-800 hover:text-gray-900 hover:bg-white/30"
+                      ? "text-gray-300 hover:text-white"
+                      : "text-gray-700 hover:text-gray-900"
                   }`}
                   onClick={handleLinkClick}
                 >
-                  {link.name}
+                  <span className="relative z-10">{link.name}</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-full scale-0 group-hover:scale-100 transition-transform duration-300 origin-center"></div>
                 </Link>
               </motion.div>
             ))}
           </motion.div>
 
           {/* Right Side: Theme Toggle + CTA Button + Mobile Menu */}
-          <div className="flex items-center space-x-3 md:space-x-4">
+          <div className="flex items-center space-x-3 md:space-x-5">
             {/* Theme Toggle Button */}
             <motion.button
-              whileHover={{ scale: 1.1, rotate: 180 }}
               whileTap={{ scale: 0.9 }}
               onClick={toggleTheme}
-              className={`p-2 rounded-full transition-all ${
+              onHoverStart={() => setThemeHovered(true)}
+              onHoverEnd={() => setThemeHovered(false)}
+              className={`relative p-2.5 rounded-full transition-all duration-300 shadow-md flex items-center justify-center overflow-hidden ${
                 isDark
-                  ? "bg-yellow-400 text-gray-900 hover:bg-yellow-300"
-                  : "bg-gray-900 text-yellow-400 hover:bg-gray-800"
+                  ? "bg-slate-800 border border-slate-700 hover:border-yellow-400/40 hover:shadow-yellow-400/20 hover:shadow-lg"
+                  : "bg-white border border-gray-100 hover:border-indigo-400/40 hover:shadow-indigo-400/20 hover:shadow-lg"
               }`}
               aria-label="Toggle theme"
             >
-              {isDark ? <BsSunFill size={20} /> : <BsMoonStarsFill size={20} />}
+              <AnimatePresence mode="wait" initial={false}>
+                {(() => {
+                  // Show hovered (opposite) icon when hovering, else show current
+                  const showDark = isDark ? !themeHovered : themeHovered;
+                  return showDark ? (
+                    <motion.span
+                      key="moon"
+                      initial={{ opacity: 0, rotate: -90, scale: 0.5 }}
+                      animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                      exit={{ opacity: 0, rotate: 90, scale: 0.5 }}
+                      transition={{ duration: 0.12, ease: [0.22, 1, 0.36, 1] }}
+                      className="text-indigo-400 flex"
+                    >
+                      <BsMoonStarsFill size={18} />
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="sun"
+                      initial={{ opacity: 0, rotate: 90, scale: 0.5 }}
+                      animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                      exit={{ opacity: 0, rotate: -90, scale: 0.5 }}
+                      transition={{ duration: 0.12, ease: [0.22, 1, 0.36, 1] }}
+                      className="text-yellow-400 flex"
+                    >
+                      <BsSunFill size={18} />
+                    </motion.span>
+                  );
+                })()}
+              </AnimatePresence>
             </motion.button>
 
             {/* CTA Button (Desktop) */}
-            <motion.a
+            <a
               href="https://www.linkedin.com/in/dharamraj-prasad-yadav/"
               target="_blank"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="hidden md:block px-5 lg:px-6 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-md"
+              rel="noopener noreferrer"
+              className={`hidden md:flex group relative overflow-hidden items-center justify-center px-6 py-2.5 rounded-lg font-bold text-sm transition-all duration-300 hover:translate-y-[2px] active:translate-y-[5px] active:shadow-none ${
+                isDark
+                  ? "bg-gradient-to-b from-primary/90 to-primary/80 text-white border-t border-white/40 border-x border-white/20 border-b-0 shadow-[0_4px_0_rgba(194,65,12,0.8),_0_8px_15px_rgba(0,0,0,0.4)] hover:shadow-[0_2px_0_rgba(194,65,12,0.8),_0_4px_8px_rgba(0,0,0,0.3)]"
+                  : "bg-gradient-to-b from-primary/90 to-primary/80 text-white border-t border-white/40 border-x border-white/20 border-b-0 shadow-[0_4px_0_rgba(194,65,12,0.8),_0_8px_15px_rgba(0,0,0,0.2)] hover:shadow-[0_2px_0_rgba(194,65,12,0.8),_0_4px_8px_rgba(0,0,0,0.15)]"
+              }`}
             >
-              Let's Talk
-            </motion.a>
+              <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 to-transparent rounded-t-lg pointer-events-none"></div>
+              <span className="relative z-10" style={{ textShadow: isDark ? '0 1px 2px rgba(0,0,0,0.4)' : 'none' }}>Let's Talk</span>
+            </a>
 
             {/* Mobile Menu Toggle */}
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsOpen(!isOpen)}
-              className={`md:hidden p-2 rounded-lg transition-all ${
+              className={`md:hidden p-2 rounded-full transition-all glass ${
                 isDark
-                  ? "text-white hover:bg-white/10"
-                  : "text-gray-900 hover:bg-white/30"
+                  ? "text-white hover:bg-white/20"
+                  : "text-gray-900 hover:bg-black/5"
               }`}
               aria-label="Toggle menu"
             >
-              {isOpen ? <HiX size={28} /> : <HiMenuAlt3 size={28} />}
+              {isOpen ? <HiX size={24} /> : <HiMenuAlt3 size={24} />}
             </motion.button>
           </div>
         </nav>
       </motion.header>
 
+      {/* Mobile Navigation - Full Screen Overlay with Glassmorphism */}
       {/* Mobile Navigation - Full Screen Overlay with Glassmorphism */}
       <AnimatePresence>
         {isOpen && (
@@ -160,88 +193,107 @@ function Header() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-40 bg-black/50 backdrop-blur-xl md:hidden"
             />
 
-            {/* Mobile Menu */}
+            {/* Mobile Menu Panel */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className={`fixed top-0 right-0 bottom-0 z-50 w-[80%] max-w-sm md:hidden shadow-2xl ${
+              transition={{ type: "spring", damping: 28, stiffness: 200 }}
+              className={`fixed top-0 right-0 bottom-0 z-50 w-[85%] max-w-[320px] md:hidden shadow-[-20px_0_40px_rgba(0,0,0,0.3)] border-l ${
                 isDark
-                  ? "bg-gray-900/40 backdrop-blur-xl border-l border-white/20"
-                  : "bg-white/30 backdrop-blur-xl border-l border-white/40"
-              }`}
+                  ? "bg-slate-900/80 border-white/10"
+                  : "bg-white/80 border-white/40"
+              } backdrop-blur-2xl rounded-l-[2.5rem]`}
             >
               {/* Mobile Menu Header */}
-              <div
-                className={`flex justify-between items-center p-6 border-b ${
-                  isDark ? "border-white/10" : "border-white/20"
-                }`}
-              >
-                <h2
-                  className={`text-xl font-bold ${
-                    isDark ? "text-white" : "text-gray-900"
-                  }`}
-                >
-                  Console
+              <div className="flex justify-between items-center p-8 pb-4">
+                <h2 className="text-xl font-black uppercase tracking-widest bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  Navigation
                 </h2>
                 <motion.button
-                  whileTap={{ scale: 0.9 }}
+                  whileTap={{ scale: 0.9, rotate: 90 }}
                   onClick={() => setIsOpen(false)}
-                  className={`p-2 rounded-lg transition-all ${
+                  className={`p-2.5 rounded-full transition-all duration-300 ${
                     isDark
-                      ? "text-white hover:bg-white/10"
-                      : "text-gray-900 hover:bg-white/30"
+                      ? "bg-white/5 text-white hover:bg-white/15"
+                      : "bg-black/5 text-gray-900 hover:bg-black/10"
                   }`}
                   aria-label="Close menu"
                 >
-                  <HiX size={24} />
+                  <HiX size={20} />
                 </motion.button>
               </div>
 
-              {/* Mobile Menu Content */}
-              <div className="flex flex-col h-[calc(100%-80px)] justify-between p-6">
-                <div className="space-y-2">
+              {/* Mobile Menu Links */}
+              <div className="flex flex-col h-[calc(100%-100px)] justify-between px-8 pb-8 pt-4">
+                <div className="flex flex-col gap-2">
                   {navLinks.map((link, index) => (
-                    <motion.a
+                    <motion.div
                       key={link.name}
-                      href={link.href}
-                      initial={{ opacity: 0, x: 50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 50 }}
-                      transition={{ delay: index * 0.1 }}
-                      onClick={handleLinkClick}
-                      whileTap={{ scale: 0.95 }}
-                      className={`block px-4 py-4 rounded-lg text-lg font-medium transition-all ${
-                        isDark
-                          ? "text-gray-200 hover:text-white hover:bg-white/10 backdrop-blur-sm"
-                          : "text-gray-800 hover:text-gray-900 hover:bg-white/40 backdrop-blur-sm"
-                      }`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, x: 20 }}
+                      transition={{ 
+                        duration: 0.4, 
+                        delay: 0.1 + index * 0.08,
+                        ease: [0.22, 1, 0.36, 1]
+                      }}
                     >
-                      {link.name}
-                    </motion.a>
+                      <Link
+                        to={link.href}
+                        onClick={handleLinkClick}
+                        className={`group flex items-center justify-between py-4 border-b ${
+                          isDark ? "border-white/5" : "border-black/5"
+                        }`}
+                      >
+                        <span className={`text-xl font-medium transition-colors duration-300 ${
+                          isDark
+                            ? "text-gray-300 group-hover:text-white"
+                            : "text-gray-600 group-hover:text-black"
+                        }`}>
+                          {link.name}
+                        </span>
+                        <span className={`transform transition-transform duration-300 group-hover:translate-x-2 ${
+                          isDark ? "text-primary/70" : "text-primary"
+                        }`}>
+                          →
+                        </span>
+                      </Link>
+                    </motion.div>
                   ))}
                 </div>
 
                 {/* Mobile CTA Button */}
-                <motion.a
-                  href="https://www.linkedin.com/in/dharamraj-prasad-yadav/"
-                  target="_blank"
-                  initial={{ opacity: 0, y: 20 }}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ delay: 0.5 }}
-                  onClick={handleLinkClick}
-                  whileTap={{ scale: 0.95 }}
-                  className="block w-full px-6 py-4 bg-blue-600 text-white text-center rounded-lg font-medium hover:bg-blue-700 transition-colors shadow-lg"
+                  exit={{ opacity: 0, y: 30 }}
+                  transition={{ delay: 0.4, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className="mt-auto"
                 >
-                  Let's Talk
-                </motion.a>
+                  <a
+                    href="https://www.linkedin.com/in/dharamraj-prasad-yadav/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={handleLinkClick}
+                    className="group relative overflow-hidden w-full flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-base text-white transition-all duration-300 hover:translate-y-[2px] active:translate-y-[5px] active:shadow-none
+                      bg-gradient-to-b from-primary to-primary/80
+                      border-t border-white/25 border-x border-white/10 border-b-0
+                      shadow-[0_5px_0_rgba(180,60,0,1),_0_10px_20px_rgba(249,115,22,0.35)]
+                      hover:shadow-[0_3px_0_rgba(180,60,0,1),_0_5px_10px_rgba(249,115,22,0.25)]"
+                  >
+                    <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 to-transparent rounded-t-xl pointer-events-none"></div>
+                    <span className="relative z-10 flex items-center gap-2">
+                      Let's Talk
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    </span>
+                  </a>
+                </motion.div>
               </div>
             </motion.div>
           </>

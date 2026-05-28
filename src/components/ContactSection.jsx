@@ -106,91 +106,34 @@ const handleSubmit = async (e) => {
       name: "GitHub",
       icon: FaGithub,
       url: "https://github.com/dharamraj82",
-      color: isDark ? "hover:text-gray-300" : "hover:text-gray-900",
+      hoverClass: "hover:from-gray-700 hover:to-black hover:text-white",
     },
     {
       name: "LinkedIn",
       icon: FaLinkedin,
       url: "https://www.linkedin.com/in/dharamraj-prasad-yadav/",
-      color: "hover:text-blue-500",
+      hoverClass: "hover:from-[#0A66C2] hover:to-[#004182] hover:text-white",
     },
     {
       name: "X (Twitter)",
       icon: BsTwitterX,
       url: "https://x.com/Dharamrajpdyadv",
-      color: "hover:text-zinc-900",
+      hoverClass: "hover:from-gray-700 hover:to-black hover:text-white",
     },
     {
       name: "Instagram",
       icon: FaInstagram,
       url: "https://www.instagram.com/dharamraj_pd_yadav/",
-      color: "hover:text-pink-500",
+      hoverClass: "hover:from-[#f09433] hover:via-[#dc2743] hover:to-[#bc1888] hover:text-white",
     }
   ];
 
   return (
     <section
       id="contact"
-      className={`relative py-20 md:py-32 overflow-hidden`}
+      className={`relative py-12 md:py-20`}
     >
-      {/* Animated Background Pattern */}
-      <div className="absolute inset-0 opacity-20">
-        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern
-              id="contactGrid"
-              width="60"
-              height="60"
-              patternUnits="userSpaceOnUse"
-            >
-              <path
-                d="M 60 0 L 0 0 0 60"
-                fill="none"
-                stroke={isDark ? "rgba(59, 130, 246, 0.1)" : "rgba(59, 130, 246, 0.08)"}
-                strokeWidth="1"
-              />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#contactGrid)" />
-        </svg>
-      </div>
-
-      {/* Floating Decorative Elements */}
-      <motion.div
-        animate={{
-          y: [0, -30, 0],
-          rotate: [0, 10, 0],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className={`absolute top-20 right-10 text-6xl opacity-10 ${
-          isDark ? "text-blue-400" : "text-blue-600"
-        }`}
-      >
-        ✉️
-      </motion.div>
-
-      <motion.div
-        animate={{
-          y: [0, 25, 0],
-          rotate: [0, -10, 0],
-        }}
-        transition={{
-          duration: 7,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className={`absolute bottom-32 left-10 text-5xl opacity-10 ${
-          isDark ? "text-purple-400" : "text-purple-600"
-        }`}
-      >
-        💬
-      </motion.div>
-
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
           <motion.div
@@ -201,12 +144,12 @@ const handleSubmit = async (e) => {
             className="flex items-center justify-center gap-2 mb-6"
           >
             <HiMail
-              className={isDark ? "text-blue-400" : "text-blue-600"}
+              className={isDark ? "text-primary" : "text-primary"}
               size={32}
             />
             <span
               className={`text-sm md:text-base font-semibold uppercase tracking-wider ${
-                isDark ? "text-blue-400" : "text-blue-600"
+                isDark ? "text-primary" : "text-primary"
               }`}
             >
               Get In Touch
@@ -219,15 +162,15 @@ const handleSubmit = async (e) => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 ${
-              isDark ? "text-white" : "text-gray-900"
+              isDark ? "text-white" : "text-slate-900"
             }`}
           >
             Let's Work{" "}
             <span
               className={
                 isDark
-                  ? "bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
-                  : "bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+                  ? "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+                  : "bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
               }
             >
               Together
@@ -240,7 +183,7 @@ const handleSubmit = async (e) => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
             className={`text-base md:text-lg lg:text-xl max-w-2xl mx-auto ${
-              isDark ? "text-gray-300" : "text-gray-600"
+              isDark ? "text-slate-300" : "text-slate-600"
             }`}
           >
             Have a project in mind? Let's create something amazing together.
@@ -267,23 +210,25 @@ const handleSubmit = async (e) => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.02, x: 10 }}
-                  className={`group flex items-center gap-4 p-4 rounded-2xl transition-all ${
+                  className={`group relative overflow-hidden flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-105 hover:-translate-y-1 active:scale-95 active:translate-y-0 ${
                     isDark
-                      ? "bg-gray-800/30 backdrop-blur-md border border-gray-700/50 hover:border-blue-500/50"
-                      : "bg-white/50 backdrop-blur-md border border-gray-200 hover:border-blue-400"
-                  } shadow-lg hover:shadow-xl`}
+                      ? "bg-gradient-to-b from-slate-800 to-slate-900 border-t border-white/20 border-x border-white/5 border-b-0 shadow-[0_5px_0_rgba(30,41,59,1),_0_10px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_3px_0_rgba(30,41,59,1),_0_15px_30px_rgba(0,0,0,0.5)]"
+                      : "bg-gradient-to-b from-white to-slate-50 border-t border-white/80 border-x border-slate-200 border-b-0 shadow-[0_5px_0_rgba(203,213,225,1),_0_10px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_3px_0_rgba(203,213,225,1),_0_15px_30px_rgba(0,0,0,0.2)]"
+                  }`}
                 >
+                  <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 to-transparent rounded-t-2xl pointer-events-none"></div>
+                  
                   <div
-                    className={`p-3 rounded-xl transition-all ${
+                    className={`relative overflow-hidden z-10 flex items-center justify-center shrink-0 w-12 h-12 rounded-xl transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:-translate-y-2 ${
                       isDark
-                        ? "bg-blue-500/20 text-blue-400 group-hover:bg-blue-500 group-hover:text-white"
-                        : "bg-blue-100 text-blue-600 group-hover:bg-blue-600 group-hover:text-white"
+                        ? "bg-gradient-to-b from-slate-700 to-slate-800 text-primary border-t border-white/10 border-x border-white/5 border-b-0 shadow-[0_3px_0_rgba(2,6,23,1),_0_5px_10px_rgba(0,0,0,0.5)] group-hover:shadow-[0_7px_0_rgba(2,6,23,1),_0_15px_20px_rgba(0,0,0,0.6)]"
+                        : "bg-gradient-to-b from-white to-slate-50 text-primary border-t border-slate-100 border-x border-slate-200 border-b-0 shadow-[0_3px_0_rgba(148,163,184,1),_0_5px_10px_rgba(0,0,0,0.1)] group-hover:shadow-[0_7px_0_rgba(148,163,184,1),_0_15px_20px_rgba(0,0,0,0.15)]"
                     }`}
                   >
-                    <info.icon size={24} />
+                    <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/10 to-transparent rounded-t-xl pointer-events-none"></div>
+                    <info.icon size={24} className="relative z-10" />
                   </div>
-                  <div>
+                  <div className="relative z-10">
                     <p
                       className={`text-sm font-medium ${
                         isDark ? "text-gray-400" : "text-gray-600"
@@ -322,41 +267,32 @@ const handleSubmit = async (e) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className={`p-6 rounded-2xl ${
-                isDark
-                  ? "bg-gray-800/30 backdrop-blur-md border border-gray-700/50"
-                  : "bg-white/50 backdrop-blur-md border border-gray-200"
-              } shadow-lg`}
+              className={`p-8 rounded-3xl glass shadow-[0_0_15px_rgba(99,102,241,0.1)]`}
             >
               <h3
                 className={`text-xl font-bold mb-6 ${
-                  isDark ? "text-white" : "text-gray-900"
+                  isDark ? "text-white" : "text-slate-900"
                 }`}
               >
                 Connect With Me
               </h3>
               <div className="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-3 xl:grid-cols-6 gap-4">
                 {socialLinks.map((social, index) => (
-                  <motion.a
+                  <a
                     key={index}
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
-                    whileHover={{ scale: 1.2, rotate: 5 }}
-                    whileTap={{ scale: 0.9 }}
-                    className={`flex items-center justify-center p-4 rounded-xl transition-all ${
+                    className={`group relative overflow-hidden flex items-center justify-center shrink-0 w-14 h-14 mx-auto aspect-square rounded-full transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] hover:scale-110 hover:-translate-y-2 hover:z-10 active:scale-95 ${social.hoverClass} ${
                       isDark
-                        ? "bg-gray-700/50 text-gray-300 hover:bg-gray-700"
-                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                    } ${social.color} shadow-md hover:shadow-lg`}
+                        ? "bg-gradient-to-b from-slate-700 to-slate-800 text-gray-300 border-t border-white/20 border-x border-white/5 shadow-[0_4px_10px_rgba(0,0,0,0.3)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.5)]"
+                        : "bg-gradient-to-b from-slate-100 to-slate-200 text-gray-600 border-t border-white/80 border-x border-white/40 shadow-[0_4px_10px_rgba(0,0,0,0.1)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.2)]"
+                    }`}
                     title={social.name}
                   >
-                    <social.icon size={24} />
-                  </motion.a>
+                    <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 to-transparent rounded-t-full pointer-events-none"></div>
+                    <social.icon size={24} className={`relative z-10 transition-colors group-hover:text-white`} />
+                  </a>
                 ))}
               </div>
             </motion.div>
@@ -371,18 +307,14 @@ const handleSubmit = async (e) => {
           >
             <form
               onSubmit={handleSubmit}
-              className={`p-8 rounded-3xl ${
-                isDark
-                  ? "bg-gray-800/40 backdrop-blur-xl border border-gray-700/50"
-                  : "bg-white/60 backdrop-blur-xl border border-gray-200"
-              } shadow-2xl`}
+              className={`p-8 rounded-3xl glass shadow-[0_0_20px_rgba(99,102,241,0.15)]`}
             >
               {/* Name Input */}
               <div className="mb-6">
                 <label
                   htmlFor="name"
                   className={`block text-sm font-semibold mb-2 ${
-                    isDark ? "text-gray-200" : "text-gray-700"
+                    isDark ? "text-slate-200" : "text-slate-700"
                   }`}
                 >
                   Full Name
@@ -394,12 +326,12 @@ const handleSubmit = async (e) => {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className={`w-full px-4 py-3 rounded-xl transition-all ${
+                  className={`w-full px-5 py-4 rounded-2xl transition-all ${
                     isDark
-                      ? "bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
-                      : "bg-white border border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
-                  } outline-none`}
-                  placeholder="Dharamra Pd Yadav"
+                      ? "bg-slate-800/80 border border-slate-700 text-white placeholder-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/50"
+                      : "bg-white border border-slate-200 text-slate-900 placeholder-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/50"
+                  } outline-none shadow-inner`}
+                  placeholder="Dharamraj Prasad Yadav"
                 />
               </div>
 
@@ -408,7 +340,7 @@ const handleSubmit = async (e) => {
                 <label
                   htmlFor="email"
                   className={`block text-sm font-semibold mb-2 ${
-                    isDark ? "text-gray-200" : "text-gray-700"
+                    isDark ? "text-slate-200" : "text-slate-700"
                   }`}
                 >
                   Email Address
@@ -420,22 +352,22 @@ const handleSubmit = async (e) => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className={`w-full px-4 py-3 rounded-xl transition-all ${
+                  className={`w-full px-5 py-4 rounded-2xl transition-all ${
                     isDark
-                      ? "bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
-                      : "bg-white border border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
-                  } outline-none`}
-                  placeholder="dpy123@gamil.com"
+                      ? "bg-slate-800/80 border border-slate-700 text-white placeholder-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/50"
+                      : "bg-white border border-slate-200 text-slate-900 placeholder-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/50"
+                  } outline-none shadow-inner`}
+                  placeholder="dpy123@gmail.com"
                 />
               </div>
 
     
               {/* Message Textarea */}
-              <div className="mb-6">
+              <div className="mb-8">
                 <label
                   htmlFor="message"
                   className={`block text-sm font-semibold mb-2 ${
-                    isDark ? "text-gray-200" : "text-gray-700"
+                    isDark ? "text-slate-200" : "text-slate-700"
                   }`}
                 >
                   Message
@@ -447,45 +379,46 @@ const handleSubmit = async (e) => {
                   onChange={handleChange}
                   required
                   rows="5"
-                  className={`w-full px-4 py-3 rounded-xl transition-all resize-none ${
+                  className={`w-full px-5 py-4 rounded-2xl transition-all resize-none ${
                     isDark
-                      ? "bg-gray-700/50 border border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
-                      : "bg-white border border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
-                  } outline-none`}
+                      ? "bg-slate-800/80 border border-slate-700 text-white placeholder-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/50"
+                      : "bg-white border border-slate-200 text-slate-900 placeholder-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/50"
+                  } outline-none shadow-inner`}
                   placeholder="Tell me about your project..."
                 />
               </div>
 
               {/* Submit Button */}
-              <motion.button
+              <button
                 type="submit"
                 disabled={formStatus.loading}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className={`w-full py-4 px-6 rounded-xl font-semibold text-lg flex items-center justify-center gap-2 transition-all ${
+                className={`group relative overflow-hidden w-full py-4 px-6 rounded-xl font-bold text-lg flex items-center justify-center gap-2 transition-all duration-300 ${
                   formStatus.loading
-                    ? "bg-gray-500 cursor-not-allowed"
-                    : isDark
-                    ? "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white"
-                    : "bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
-                } shadow-lg hover:shadow-2xl`}
+                    ? "bg-slate-500 cursor-not-allowed"
+                    : "hover:translate-y-[2px] active:translate-y-[5px] active:shadow-none " + (isDark
+                      ? "bg-gradient-to-b from-primary/90 to-primary/80 text-white border-t border-white/40 border-x border-white/20 border-b-0 shadow-[0_5px_0_rgba(194,65,12,0.8),_0_10px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_3px_0_rgba(194,65,12,0.8),_0_5px_10px_rgba(0,0,0,0.3)]"
+                      : "bg-gradient-to-b from-primary/90 to-primary/80 text-white border-t border-white/40 border-x border-white/20 border-b-0 shadow-[0_5px_0_rgba(194,65,12,0.8),_0_10px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_3px_0_rgba(194,65,12,0.8),_0_5px_10px_rgba(0,0,0,0.15)]"
+                    )
+                }`}
               >
+                {!formStatus.loading && <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 to-transparent rounded-t-xl pointer-events-none"></div>}
+                
                 {formStatus.loading ? (
                   <>
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      className="w-6 h-6 border-3 border-white border-t-transparent rounded-full"
+                      className="relative z-10 w-6 h-6 border-3 border-white border-t-transparent rounded-full"
                     />
-                    Sending...
+                    <span className="relative z-10">Sending...</span>
                   </>
                 ) : (
                   <>
-                    <HiPaperAirplane size={20} />
-                    Send Message
+                    <HiPaperAirplane size={20} className="relative z-10" />
+                    <span className="relative z-10" style={{ textShadow: isDark ? '0 1px 2px rgba(0,0,0,0.4)' : 'none' }}>Send Message</span>
                   </>
                 )}
-              </motion.button>
+              </button>
 
               {/* Success/Error Messages */}
               {formStatus.success && (

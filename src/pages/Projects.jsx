@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { HiCode, HiLightningBolt } from "react-icons/hi";
+import { FaGithub } from "react-icons/fa";
 import {
   SiReact,
   SiNodedotjs,
@@ -177,25 +178,9 @@ function Projects() {
         </svg>
       </div>
 
-      {/* Floating Elements */}
-      <motion.div
-        animate={{
-          y: [0, -30, 0],
-          rotate: [0, 10, 0],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className={`absolute top-20 right-10 text-6xl opacity-10 ${
-          isDark ? "text-purple-400" : "text-purple-600"
-        }`}
-      >
-        &lt;/&gt;
-      </motion.div>
 
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
+
+      <div className="relative max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
           <motion.div
@@ -206,12 +191,12 @@ function Projects() {
             className="flex items-center justify-center gap-2 mb-6"
           >
             <HiCode
-              className={isDark ? "text-purple-400" : "text-purple-600"}
+              className={isDark ? "text-primary" : "text-primary"}
               size={32}
             />
             <span
               className={`text-sm md:text-base font-semibold uppercase tracking-wider ${
-                isDark ? "text-purple-400" : "text-purple-600"
+                isDark ? "text-primary" : "text-primary"
               }`}
             >
               My Projects
@@ -231,8 +216,8 @@ function Projects() {
             <span
               className={
                 isDark
-                  ? "bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
-                  : "bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
+                  ? "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+                  : "bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
               }
             >
               Work & Projects
@@ -254,7 +239,7 @@ function Projects() {
         </div>
 
         {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="flex flex-col gap-16 max-w-6xl mx-auto">
           {projects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
@@ -267,21 +252,20 @@ function Projects() {
         transition={{ duration: 0.6, delay: 0.8 }}
         className="text-center mt-16"
       >
-        <motion.a
+        <a
           href="https://github.com/Dharamraj82"
           target="_blank"
           rel="noopener noreferrer"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className={`inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg transition-all ${
+          className={`group relative overflow-hidden inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 hover:translate-y-[2px] active:translate-y-[5px] active:shadow-none ${
             isDark
-              ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white"
-              : "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
-          } shadow-lg hover:shadow-2xl`}
+              ? "bg-gradient-to-b from-slate-700 to-slate-800 text-white border-t border-white/20 border-x border-white/5 border-b-0 shadow-[0_5px_0_rgba(30,41,59,1),_0_10px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_3px_0_rgba(30,41,59,1),_0_5px_10px_rgba(0,0,0,0.3)]"
+              : "bg-gradient-to-b from-slate-100 to-slate-200 text-slate-800 border-t border-white/80 border-x border-white/40 border-b-0 shadow-[0_5px_0_rgba(203,213,225,1),_0_10px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_3px_0_rgba(203,213,225,1),_0_5px_10px_rgba(0,0,0,0.05)]"
+          }`}
         >
-          <HiLightningBolt size={24} />
-          View More on Github
-        </motion.a>
+          <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 to-transparent rounded-t-xl pointer-events-none"></div>
+          <FaGithub size={24} className="relative z-10" />
+          <span className="relative z-10">View More on Github</span>
+        </a>
       </motion.div>
     </section>
   );

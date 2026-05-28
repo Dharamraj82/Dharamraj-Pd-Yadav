@@ -36,8 +36,8 @@ export const useTheme = () => {
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    // Check localStorage or default to light
-    return localStorage.getItem("theme") || "light";
+    // Check localStorage or default to dark
+    return localStorage.getItem("theme") || "dark";
   });
 
   useEffect(() => {

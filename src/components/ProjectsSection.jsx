@@ -81,51 +81,9 @@ function ProjectsSection() {
   return (
     <section
       id="projects"
-      className={`relative py-20 md:py-32 overflow-hidden`}
+      className={`relative py-12 md:py-20`}
     >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-20">
-        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern
-              id="projectGrid"
-              width="60"
-              height="60"
-              patternUnits="userSpaceOnUse"
-            >
-              <path
-                d="M 60 0 L 0 0 0 60"
-                fill="none"
-                stroke={
-                  isDark ? "rgba(59, 130, 246, 0.1)" : "rgba(147, 51, 234, 0.1)"
-                }
-                strokeWidth="1"
-              />
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#projectGrid)" />
-        </svg>
-      </div>
-
-      {/* Floating Elements */}
-      <motion.div
-        animate={{
-          y: [0, -30, 0],
-          rotate: [0, 10, 0],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-        className={`absolute top-20 right-10 text-6xl opacity-10 ${
-          isDark ? "text-purple-400" : "text-purple-600"
-        }`}
-      >
-        &lt;/&gt;
-      </motion.div>
-
-      <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
           <motion.div
@@ -136,12 +94,12 @@ function ProjectsSection() {
             className="flex items-center justify-center gap-2 mb-6"
           >
             <HiCode
-              className={isDark ? "text-purple-400" : "text-purple-600"}
+              className={isDark ? "text-primary" : "text-primary"}
               size={32}
             />
             <span
               className={`text-sm md:text-base font-semibold uppercase tracking-wider ${
-                isDark ? "text-purple-400" : "text-purple-600"
+                isDark ? "text-primary" : "text-primary"
               }`}
             >
               My Projects
@@ -154,15 +112,15 @@ function ProjectsSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 ${
-              isDark ? "text-white" : "text-gray-900"
+              isDark ? "text-white" : "text-slate-900"
             }`}
           >
             Featured{" "}
             <span
               className={
                 isDark
-                  ? "bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
-                  : "bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
+                  ? "bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+                  : "bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
               }
             >
               Work & Projects
@@ -175,7 +133,7 @@ function ProjectsSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.4 }}
             className={`text-base md:text-lg lg:text-xl max-w-3xl mx-auto ${
-              isDark ? "text-gray-300" : "text-gray-600"
+              isDark ? "text-slate-300" : "text-slate-600"
             }`}
           >
             Explore my latest projects showcasing my expertise in full-stack
@@ -185,7 +143,7 @@ function ProjectsSection() {
 
 
         {/* Projects Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="flex flex-col gap-16 max-w-6xl mx-auto">
           {projects.map((project, index) => (
             <ProjectCard key={project.id} project={project} index={index} />
           ))}
@@ -199,20 +157,19 @@ function ProjectsSection() {
           transition={{ duration: 0.6, delay: 0.8 }}
           className="text-center mt-16"
         >
-          <motion.a
+          <a
             href="/projects"
             rel="noopener noreferrer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className={`inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg transition-all ${
+            className={`group relative overflow-hidden inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-lg transition-all duration-300 hover:translate-y-[2px] active:translate-y-[5px] active:shadow-none ${
               isDark
-                ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white"
-                : "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
-            } shadow-lg hover:shadow-2xl`}
+                ? "bg-gradient-to-b from-primary/90 to-primary/80 text-white border-t border-white/40 border-x border-white/20 border-b-0 shadow-[0_5px_0_rgba(194,65,12,0.8),_0_10px_20px_rgba(0,0,0,0.4)] hover:shadow-[0_3px_0_rgba(194,65,12,0.8),_0_5px_10px_rgba(0,0,0,0.3)]"
+                : "bg-gradient-to-b from-primary/90 to-primary/80 text-white border-t border-white/40 border-x border-white/20 border-b-0 shadow-[0_5px_0_rgba(194,65,12,0.8),_0_10px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_3px_0_rgba(194,65,12,0.8),_0_5px_10px_rgba(0,0,0,0.15)]"
+            }`}
           >
-            <HiLightningBolt size={24} />
-            View More Projects
-          </motion.a>
+            <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 to-transparent rounded-t-xl pointer-events-none"></div>
+            <HiLightningBolt size={24} className="relative z-10" />
+            <span className="relative z-10" style={{ textShadow: isDark ? '0 1px 2px rgba(0,0,0,0.4)' : 'none' }}>View More Projects</span>
+          </a>
         </motion.div>
       </div>
     </section>
