@@ -6,10 +6,33 @@
   <link rel="icon" type="image/svg+xml" href="/file.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dharamraj Pd Yadav</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Tektur:wght@477&display=swap" rel="stylesheet">
-  <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+
+  <!-- ── Critical Resource Hints ─────────────────────────── -->
+  <!-- DNS resolve + TCP handshake for API before JS runs -->
+  <link rel="preconnect" href="http://localhost:5000" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Preload the profile image — used above the fold on home & about page -->
+  <link rel="preload" href="/profileImage.png" as="image" fetchpriority="high" />
+
+  <!-- Prefetch devicon CSS (non-critical, loaded after page paint) -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+  </noscript>
+
+  <!-- Google Fonts — display=swap prevents render blocking -->
+  <link href="https://fonts.googleapis.com/css2?family=Tektur:wght@477&family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- ── SEO & Social ─────────────────────────────────────── -->
+  <meta name="description" content="Dharamraj Pd Yadav — Full Stack Web Developer & MCA Student. MERN stack, React, Node.js, and more." />
+  <meta name="theme-color" content="#ea580c" />
+  <meta property="og:title" content="Dharamraj Pd Yadav | Full Stack Developer" />
+  <meta property="og:description" content="Portfolio of Dharamraj Pd Yadav — Full Stack Web Developer specializing in MERN stack." />
+  <meta property="og:type" content="website" />
 </head>
 
 <body>

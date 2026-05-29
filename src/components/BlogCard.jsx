@@ -1,255 +1,439 @@
-import { motion } from "framer-motion";
-import { FiCalendar, FiClock, FiChevronDown } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
+import { FiCalendar, FiClock, FiX, FiArrowUpRight, FiBookOpen } from "react-icons/fi";
 import { HiTag } from "react-icons/hi";
-import { BsDot } from "react-icons/bs";
 import { useTheme } from "../context/ThemeProvider";
-import { useState, useId } from "react";
+import { useState } from "react";
+import { createPortal } from "react-dom";
 
-function BlogCard({ blog, index }) {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-  const [isExpanded, setIsExpanded] = useState(false);
-  const uniqueId = useId();
-
-  // Format date function
- const formatDate = (dateString) => {
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  return new Date(dateString).toLocaleDateString('en-US', options);
+const formatDate = (dateString) => {
+  if (!dateString) return "";
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  return new Date(dateString).toLocaleDateString("en-US", options);
 };
 
-  return (
-    <motion.article
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className={`group relative overflow-hidden rounded-3xl transition-all duration-500 ${
-        isDark
-          ? "bg-gradient-to-br from-gray-800/90 via-gray-800/70 to-gray-900/90 backdrop-blur-xl border border-gray-700/30"
-          : "bg-gradient-to-br from-white via-gray-50/50 to-white backdrop-blur-xl border border-gray-200/50"
-      } shadow-xl hover:shadow-2xl hover:-translate-y-3`}
-    >
-      {/* Blog Image with Enhanced Overlay */}
-      <div className="relative overflow-hidden h-64 sm:h-72">
-        <motion.img
-          whileHover={{ scale: 1.15, rotate: 2 }}
-          transition={{ duration: 0.7, ease: [0.23, 1, 0.32, 1] }}
-          src={blog.image}
-          alt={blog.title}
-          className="w-full h-full object-cover"
-        />
-        
-        {/* Dynamic Gradient Overlay */}
+// ─── Modal ────────────────────────────────────────────────────────────────────
+function BlogModal({ blog, onClose, isDark }) {
+  return createPortal(
+    <AnimatePresence>
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 md:p-10">
+        {/* Backdrop */}
         <motion.div
-          initial={{ opacity: 0.6 }}
-          whileHover={{ opacity: 0.3 }}
-          transition={{ duration: 0.4 }}
-          className={`absolute inset-0 ${
-            isDark
-              ? "bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent"
-              : "bg-gradient-to-t from-white via-white/70 to-transparent"
-          }`}
+          key="backdrop"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          onClick={onClose}
+          className="absolute inset-0"
+          style={{
+            background: isDark
+              ? "rgba(0,0,0,0.85)"
+              : "rgba(10,10,10,0.75)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+          }}
         />
 
-        {/* Floating Category Badge */}
-        <motion.div 
-          className="absolute top-4 left-4"
-          whileHover={{ scale: 1.1, y: -2 }}
-          transition={{ type: "spring", stiffness: 400, damping: 10 }}
-        >
-          <span
-            className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold backdrop-blur-xl ${
-              isDark
-                ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/50"
-                : "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg shadow-purple-400/40"
-            } border border-white/20`}
-          >
-            <HiTag size={14} />
-            {blog.category}
-          </span>
-        </motion.div>
-
-        {/* Enhanced Reading Time Badge */}
-        <div className="absolute top-4 right-4">
-          <motion.span
-            whileHover={{ scale: 1.05 }}
-            className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold backdrop-blur-xl ${
-              isDark
-                ? "bg-gray-900/90 text-gray-100 border border-gray-700/50 shadow-lg"
-                : "bg-white/90 text-gray-800 border border-gray-300/50 shadow-lg"
-            }`}
-          >
-            <FiClock size={14} />
-            {blog.readTime}
-          </motion.span>
-        </div>
-
-        {/* Animated Shine Effect */}
+        {/* Panel */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-          initial={{ x: "-100%" }}
-          whileHover={{ x: "100%" }}
-          transition={{ duration: 0.8, ease: "easeInOut" }}
-        />
-      </div>
-
-      {/* Blog Content with Enhanced Spacing */}
-      <div className="p-7 sm:p-8">
-        {/* Date with Author Meta */}
-        <div className="flex items-center gap-3 mb-4">
-          <div className="flex items-center gap-2">
-            <FiCalendar
-              className={isDark ? "text-purple-400" : "text-purple-600"}
-              size={16}
-            />
-            <time
-              className={`text-sm font-semibold ${
-                isDark ? "text-gray-300" : "text-gray-700"
-              }`}
-              dateTime={blog.date}
-            >
-              {formatDate(blog.date)}
-            </time>
-          </div>
-          <BsDot className={isDark ? "text-gray-600" : "text-gray-400"} size={20} />
-          <span className={`text-sm font-medium ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-            {blog.author.role}
-          </span>
-        </div>
-
-        {/* Title with Better Typography */}
-        <motion.h3
-          whileHover={{ x: 4 }}
-          transition={{ type: "spring", stiffness: 300 }}
-          className={`text-2xl sm:text-3xl font-bold mb-4 line-clamp-2 leading-tight transition-colors duration-300 ${
+          key="panel"
+          initial={{ opacity: 0, y: 40, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 40, scale: 0.97 }}
+          transition={{ type: "spring", damping: 28, stiffness: 320 }}
+          className={`relative w-full max-w-3xl max-h-[88vh] flex flex-col rounded-[2rem] overflow-hidden shadow-2xl z-10 ${
             isDark
-              ? "text-white group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-pink-400 group-hover:bg-clip-text group-hover:text-transparent"
-              : "text-gray-900 group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 group-hover:bg-clip-text group-hover:text-transparent"
+              ? "bg-[#111111] border border-white/10"
+              : "bg-white border border-slate-200"
           }`}
+          onClick={(e) => e.stopPropagation()}
         >
-          {blog.title}
-        </motion.h3>
-
-        {/* Expandable Description */}
-        <div className="mb-6">
-          <p
-            id={`desc-${uniqueId}`}
+          {/* Decorative top gradient bar */}
+          <div
+            className="absolute top-0 left-0 right-0 h-1 z-20"
             style={{
-              display: '-webkit-box',
-              WebkitBoxOrient: 'vertical',
-              WebkitLineClamp: isExpanded ? 999 : 3,
-              overflow: 'hidden',
-              textOverflow: 'ellipsis'
+              background: "linear-gradient(90deg, rgb(249,115,22), rgb(234,88,12), rgb(249,115,22))",
+              backgroundSize: "200% 100%",
             }}
-            className={`text-base sm:text-lg leading-relaxed ${
-              isDark ? "text-gray-300" : "text-gray-600"
+          />
+
+          {/* Header */}
+          <div
+            className={`flex items-start justify-between p-8 pb-6 shrink-0 border-b ${
+              isDark ? "border-white/5" : "border-slate-100"
             }`}
+          >
+            <div className="flex items-center gap-3 mr-10">
+              <div
+                className="p-2 rounded-xl"
+                style={{ background: "rgba(249,115,22,0.12)" }}
+              >
+                <FiBookOpen size={20} style={{ color: "rgb(249,115,22)" }} />
+              </div>
+              <span
+                className="text-xs font-bold uppercase tracking-[0.18em]"
+                style={{ color: "rgb(249,115,22)" }}
+              >
+                Article
+              </span>
+            </div>
+
+            <button
+              onClick={onClose}
+              className={`p-2.5 rounded-full transition-all duration-200 shrink-0 ${
+                isDark
+                  ? "bg-white/5 hover:bg-white/12 text-gray-400 hover:text-white"
+                  : "bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900"
+              }`}
+            >
+              <FiX size={18} />
+            </button>
+          </div>
+
+          {/* Scrollable body */}
+          <div
+            className="flex-1 overflow-y-auto px-8 py-8 custom-scrollbar"
+          >
+            {/* Category + Meta row */}
+            <div className="flex flex-wrap items-center gap-3 mb-7">
+              {blog.category && (
+                <span
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold"
+                  style={{
+                    background: "rgba(249,115,22,0.12)",
+                    color: "rgb(249,115,22)",
+                    border: "1px solid rgba(249,115,22,0.25)",
+                  }}
+                >
+                  <HiTag size={11} />
+                  {blog.category}
+                </span>
+              )}
+              {blog.date && (
+                <span
+                  className={`inline-flex items-center gap-1.5 text-xs font-medium ${
+                    isDark ? "text-gray-400" : "text-slate-500"
+                  }`}
+                >
+                  <FiCalendar size={11} />
+                  {formatDate(blog.date)}
+                </span>
+              )}
+              {blog.read_time && (
+                <span
+                  className={`inline-flex items-center gap-1.5 text-xs font-medium ${
+                    isDark ? "text-gray-400" : "text-slate-500"
+                  }`}
+                >
+                  <FiClock size={11} />
+                  {blog.read_time}
+                </span>
+              )}
+            </div>
+
+            {/* Title */}
+            <h2
+              className={`text-2xl sm:text-3xl md:text-4xl font-extrabold leading-[1.2] tracking-tight mb-8 ${
+                isDark ? "text-white" : "text-slate-900"
+              }`}
+            >
+              {blog.title}
+            </h2>
+
+            {/* Divider */}
+            <div
+              className="mb-8 rounded-full h-px w-full"
+              style={{
+                background: isDark
+                  ? "linear-gradient(90deg, rgba(249,115,22,0.5), rgba(249,115,22,0.05) 80%)"
+                  : "linear-gradient(90deg, rgba(249,115,22,0.4), rgba(249,115,22,0.04) 80%)",
+              }}
+            />
+
+            {/* Description / Full Article body */}
+            <div
+              className={`text-base sm:text-lg leading-[1.9] whitespace-pre-line ${
+                isDark ? "text-gray-300" : "text-slate-600"
+              }`}
+            >
+              {blog.description}
+            </div>
+
+            {/* Author Section */}
+            <div
+              className={`mt-10 pt-8 border-t flex items-center gap-4 ${
+                isDark ? "border-white/8" : "border-slate-100"
+              }`}
+            >
+              {/* Avatar — from DB or fallback to profile image */}
+              <div className="relative shrink-0">
+                <img
+                  src={blog.author_avatar || "./profileImage.png"}
+                  alt={blog.author_name || "Dharamraj"}
+                  className="w-14 h-14 rounded-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                  style={{
+                    border: "2px solid rgba(249,115,22,0.5)",
+                    boxShadow: "0 0 0 4px rgba(249,115,22,0.08)",
+                  }}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "./profileImage.png";
+                  }}
+                />
+              </div>
+
+              <div className="flex flex-col">
+                <span
+                  className={`text-base font-bold ${
+                    isDark ? "text-white" : "text-slate-900"
+                  }`}
+                >
+                  {blog.author_name || "Dharamraj"}
+                </span>
+                <span
+                  className="text-sm font-medium"
+                  style={{ color: "rgb(249,115,22)" }}
+                >
+                  {blog.author_role || "Author"}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer glow */}
+          <div
+            className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none rounded-b-[2rem]"
+            style={{
+              background: isDark
+                ? "linear-gradient(to top, #111111, transparent)"
+                : "linear-gradient(to top, #ffffff, transparent)",
+            }}
+          />
+        </motion.div>
+      </div>
+    </AnimatePresence>,
+    document.body
+  );
+}
+
+// ─── Card ─────────────────────────────────────────────────────────────────────
+function BlogCard({ blog, index, isFeatured = false }) {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  const [open, setOpen] = useState(false);
+  const hasImage = !!blog.image;
+  // Only apply featured layout if the blog actually has an image
+  const isActuallyFeatured = isFeatured && hasImage;
+
+  return (
+    <>
+      <motion.article
+        onClick={() => setOpen(true)}
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: index * 0.08 }}
+        whileHover={{ y: -6 }}
+        className={`group relative flex cursor-pointer rounded-2xl overflow-hidden transition-shadow duration-500 ${
+          isActuallyFeatured ? "flex-col md:flex-row md:col-span-2" : "flex-col"
+        } ${
+          isDark
+            ? "bg-[#111111] border border-white/6 hover:border-primary/40 shadow-[0_4px_24px_rgba(0,0,0,0.5)] hover:shadow-[0_8px_40px_rgba(249,115,22,0.12)]"
+            : "bg-white border border-slate-200/80 hover:border-primary/30 shadow-[0_2px_16px_rgba(0,0,0,0.06)] hover:shadow-[0_8px_40px_rgba(249,115,22,0.1)]"
+        }`}
+      >
+        {/* Image */}
+        {hasImage && (
+          <div
+            className={`relative overflow-hidden shrink-0 ${
+              isActuallyFeatured
+                ? "h-56 sm:h-72 md:h-auto md:w-[48%]"
+                : "h-52 sm:h-56"
+            }`}
+          >
+            <motion.img
+              src={blog.image}
+              alt={blog.title}
+              className="w-full h-full object-cover"
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding="async"
+              whileHover={{ scale: 1.07 }}
+              transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+            />
+            {/* Overlay */}
+            <div
+              className={`absolute inset-0 ${
+                isDark
+                  ? "bg-gradient-to-t from-[#111111] via-[#111111]/40 to-transparent"
+                  : "bg-gradient-to-t from-white/80 via-white/20 to-transparent"
+              }`}
+            />
+
+            {/* Category pill */}
+            {blog.category && (
+              <div className="absolute top-4 left-4">
+                <span
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold backdrop-blur-xl text-white"
+                  style={{
+                    background: "rgba(249,115,22,0.85)",
+                    border: "1px solid rgba(255,255,255,0.2)",
+                  }}
+                >
+                  <HiTag size={10} />
+                  {blog.category}
+                </span>
+              </div>
+            )}
+
+            {/* Reading time */}
+            {blog.read_time && (
+              <div className="absolute top-4 right-4">
+                <span
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold backdrop-blur-xl ${
+                    isDark
+                      ? "bg-black/70 text-gray-200 border border-white/10"
+                      : "bg-white/90 text-slate-700 border border-black/10"
+                  }`}
+                >
+                  <FiClock size={10} />
+                  {blog.read_time}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Body */}
+        <div
+          className={`flex flex-col flex-1 p-6 sm:p-7 ${
+            isActuallyFeatured ? "justify-center" : ""
+          }`}
+        >
+          {/* Date */}
+          {blog.date && (
+            <div
+              className={`flex items-center gap-1.5 text-xs font-medium mb-3 ${
+                isDark ? "text-gray-500" : "text-slate-400"
+              }`}
+            >
+              <FiCalendar size={11} />
+              <time dateTime={blog.date}>{formatDate(blog.date)}</time>
+              {blog.author_role && (
+                <>
+                  <span className="mx-1">·</span>
+                  <span>{blog.author_role}</span>
+                </>
+              )}
+            </div>
+          )}
+
+          {/* Title */}
+          <h3
+            className={`font-bold leading-snug mb-3 transition-colors duration-300 group-hover:text-primary ${
+              isActuallyFeatured
+                ? "text-2xl sm:text-3xl md:text-4xl"
+                : "text-xl sm:text-2xl"
+            } ${isDark ? "text-white" : "text-slate-900"}`}
+          >
+            {blog.title}
+          </h3>
+
+          {/* Excerpt */}
+          <p
+            className={`text-sm sm:text-base leading-relaxed mb-5 flex-1 ${
+              isDark ? "text-gray-400" : "text-slate-500"
+            }`}
+            style={{
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: isActuallyFeatured ? 4 : 3,
+              overflow: "hidden",
+            }}
           >
             {blog.description}
           </p>
-          
-          {/* Read More/Less Button */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setIsExpanded(prev => !prev);
-            }}
-            className={`mt-3 inline-flex items-center gap-2 text-sm font-bold transition-all duration-300 ${
-              isDark
-                ? "text-purple-400 hover:text-pink-400"
-                : "text-purple-600 hover:text-pink-600"
-            }`}
-          >
-            <span>{isExpanded ? "Show Less" : "Read More"}</span>
+
+          {/* CTA */}
+          <div className="flex items-center gap-2 mt-auto">
             <span
-              style={{
-                display: 'inline-block',
-                transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
-                transition: 'transform 0.3s ease'
-              }}
+              className="inline-flex items-center gap-1.5 text-sm font-bold transition-all duration-200 group-hover:gap-2.5"
+              style={{ color: "rgb(249,115,22)" }}
             >
-              <FiChevronDown size={18} />
+              Read More
+              <FiArrowUpRight
+                size={16}
+                className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
             </span>
-          </button>
+          </div>
         </div>
 
-        {/* Enhanced Author Section */}
-        <div className={`flex items-center justify-between pt-6 border-t ${
-          isDark ? "border-gray-700/50" : "border-gray-200"
-        }`}>
-          {/* Author Info */}
-          <motion.div 
-            className="flex items-center gap-3"
-            whileHover={{ x: 4 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <div className="relative">
-              <img
-                src={blog.author.avatar}
-                alt={blog.author.name}
-                className={`w-12 h-12 rounded-full object-cover border-2 ${
-                  isDark ? "border-purple-500/60" : "border-purple-400/60"
-                } shadow-md`}
-              />
-              <motion.div
-                className={`absolute inset-0 rounded-full ${
-                  isDark ? "bg-purple-500/20" : "bg-purple-400/20"
-                }`}
-                initial={{ scale: 1, opacity: 0 }}
-                whileHover={{ scale: 1.2, opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              />
-            </div>
-            <div>
-              <p
-                className={`text-base font-bold ${
-                  isDark ? "text-white" : "text-gray-900"
-                }`}
-              >
-                {blog.author.name}
-              </p>
-              <p
-                className={`text-sm ${
-                  isDark ? "text-gray-400" : "text-gray-600"
-                }`}
-              >
-                Author
-              </p>
-            </div>
-          </motion.div>
-        </div>
-      </div>
+        {/* Hover shine */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(249,115,22,0.05) 0%, transparent 60%)",
+          }}
+        />
+      </motion.article>
 
-      {/* Animated Glow Border Effect */}
-      <motion.div
-        className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}
-        style={{
-          background: isDark
-            ? "linear-gradient(135deg, rgba(168, 85, 247, 0.4) 0%, rgba(236, 72, 153, 0.4) 50%, rgba(168, 85, 247, 0.4) 100%)"
-            : "linear-gradient(135deg, rgba(168, 85, 247, 0.3) 0%, rgba(236, 72, 153, 0.3) 50%, rgba(168, 85, 247, 0.3) 100%)",
-          padding: "2px",
-          WebkitMask:
-            "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-          WebkitMaskComposite: "xor",
-          maskComposite: "exclude",
-        }}
-      />
-
-      {/* Corner Accent */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        whileHover={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3 }}
-        className={`absolute top-0 right-0 w-32 h-32 ${
-          isDark
-            ? "bg-gradient-to-bl from-purple-600/20 to-transparent"
-            : "bg-gradient-to-bl from-purple-400/20 to-transparent"
-        } rounded-3xl pointer-events-none`}
-      />
-    </motion.article>
+      {/* Modal */}
+      {open && (
+        <BlogModal blog={blog} isDark={isDark} onClose={() => setOpen(false)} />
+      )}
+    </>
   );
 }
 
 export default BlogCard;
+
+// ─── Skeleton ─────────────────────────────────────────────────────────────────
+export function BlogCardSkeleton({ isFeatured = false }) {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
+  return (
+    <div
+      className={`rounded-2xl overflow-hidden animate-pulse flex ${
+        isFeatured ? "flex-col md:flex-row md:col-span-2" : "flex-col"
+      } ${
+        isDark
+          ? "bg-[#111111] border border-white/5"
+          : "bg-white border border-slate-200"
+      }`}
+    >
+      <div
+        className={`shrink-0 ${
+          isFeatured ? "h-56 md:h-auto md:w-[48%]" : "h-52"
+        } ${isDark ? "bg-white/5" : "bg-slate-100"}`}
+      />
+      <div className="p-6 sm:p-7 flex-1">
+        <div
+          className={`w-24 h-3 rounded-full mb-4 ${isDark ? "bg-white/8" : "bg-slate-200"}`}
+        />
+        <div
+          className={`w-full h-6 rounded-lg mb-2 ${isDark ? "bg-white/10" : "bg-slate-200"}`}
+        />
+        <div
+          className={`w-3/4 h-6 rounded-lg mb-5 ${isDark ? "bg-white/8" : "bg-slate-200"}`}
+        />
+        <div className="space-y-2 mb-5">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className={`h-4 rounded ${i === 3 ? "w-2/3" : "w-full"} ${
+                isDark ? "bg-white/5" : "bg-slate-100"
+              }`}
+            />
+          ))}
+        </div>
+        <div
+          className={`w-24 h-4 rounded ${isDark ? "bg-white/8" : "bg-slate-200"}`}
+        />
+      </div>
+    </div>
+  );
+}

@@ -1,87 +1,29 @@
+import React from "react";
 import { motion } from "framer-motion";
-import { HiCode, HiLightningBolt } from "react-icons/hi";
-import {
-  SiReact,
-  SiNodedotjs,
-  SiMongodb,
-  SiExpress,
-  SiTailwindcss,
-  SiJavascript,
-  SiFramer ,
-} from "react-icons/si";
-import ProjectCard from "./ProjectCard";
+import { HiCode } from "react-icons/hi";
+import { FiArrowUpRight } from "react-icons/fi";
+import ProjectCard, { ProjectCardSkeleton } from "./ProjectCard";
 import { useTheme } from "../context/ThemeProvider";
+import { useApiCache } from "../context/useApiCache";
 
 function ProjectsSection() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  // Projects Data
-  const projects = [
-       {
-      id: "project-docbook",
-      title: "DOCBOOK - Doctor Appointment System",
-      description:
-        "A comprehensive doctor-patient appointment booking application built with MERN stack. Features real-time appointment scheduling, user authentication, profile management, and an intuitive dashboard for both doctors and patients.",
-      image: "./projectsImages/docbook.png",
-      category: "Full Stack",
-      techStack: [
-        { name: "React.js", icon: SiReact },
-        { name: "Node.js", icon: SiNodedotjs },
-        { name: "MongoDB", icon: SiMongodb },
-        { name: "Express", icon: SiExpress },
-        { name: "Joi (Validation)", icon: HiCode },
-        { name: "Framer-Motion", icon: SiFramer },
-      ],
-      liveUrl: "https://docbook-frontend-taupe.vercel.app/",
-      githubUrl: "https://github.com/Dharamraj82/DOCBOOK_Frontend",
-      docsUrl:
-        "https://github.com/Dharamraj82/DOCBOOK_Frontend/blob/main/README.md",
-    },
-    {
-      id: "project-portfolio",
-      title: "Personal Portfolio Website",
-      description:
-        "A modern, responsive portfolio website showcasing my projects and skills. Built with React.js and Tailwind CSS, featuring smooth animations, dark mode toggle, and an interactive project showcase with detailed case studies.",
-      image: "./projectsImages/portfolio.png",
-      category: "Frontend and Backend",
-      techStack: [
-        { name: "React.js", icon: SiReact },
-        { name: "Tailwind", icon: SiTailwindcss },
-        { name: "Express", icon: SiExpress },
-        { name: "Framer-Motion", icon: SiFramer },
-        { name: "Nodemailer", icon: HiCode },
-      ],
-      liveUrl: "https://dharamraj-pd-yadav.vercel.app/",
-      githubUrl: "https://github.com/Dharamraj82/Dharamraj-Pd-Yadav",
-      docsUrl: null,
-    },
-    {
-      id: "project-notemaker",
-      title: "AI-Notetaker",
-      description:
-        "AI Notetaker is an AI-powered application that generates structured, clean, and visually clear notes from user prompts and uploaded files.The system is designed with simplicity, clarity, and productivity in mind.",
-      image: "./projectsImages/aINotetaker.png",
-      category: "Full Stack",
-      techStack: [
-        { name: "React.js", icon: SiReact },
-        { name: "Node.js", icon: SiNodedotjs },
-        { name: "MongoDB", icon: SiMongodb },
-        { name: "Express", icon: SiExpress },
-        { name: "Groq", icon: HiCode },
-        { name: "Nodemailer", icon: HiCode },
-      ],
-      liveUrl: "https://ai-notetaker-ten.vercel.app/",
-      githubUrl: "https://github.com/Dharamraj82/AI-Notetaker",
-      docsUrl:
-        "https://github.com/Dharamraj82/AI-Notetaker/blob/main/README.md",
-    },
-  ];
+  const { data, loading } = useApiCache(
+    import.meta.env.VITE_API_URL + "/projects",
+    { ttl: 5 * 60 * 1000, transform: (d) => (Array.isArray(d) ? d : []).slice(0, 3) }
+  );
+  const projects = data || [];
+
+  if (!loading && projects.length === 0) {
+    return null;
+  }
 
   return (
     <section
       id="projects"
-      className={`relative py-12 md:py-20`}
+      className={`relative py-12`}
     >
       <div className="relative max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
@@ -144,9 +86,15 @@ function ProjectsSection() {
 
         {/* Projects Grid */}
         <div className="flex flex-col gap-16 max-w-6xl mx-auto">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
+          {loading ? (
+            Array.from({ length: 3 }).map((_, index) => (
+              <ProjectCardSkeleton key={`skeleton-${index}`} index={index} />
+            ))
+          ) : (
+            projects.map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} />
+            ))
+          )}
         </div>
 
         {/* View More Section */}
@@ -167,8 +115,8 @@ function ProjectsSection() {
             }`}
           >
             <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 to-transparent rounded-t-xl pointer-events-none"></div>
-            <HiLightningBolt size={24} className="relative z-10" />
-            <span className="relative z-10" style={{ textShadow: isDark ? '0 1px 2px rgba(0,0,0,0.4)' : 'none' }}>View More Projects</span>
+            <span className="relative z-10" style={{ textShadow: isDark ? '0 1px 2px rgba(0,0,0,0.4)' : 'none' }}>View All Projects</span>
+            <FiArrowUpRight size={22} className="relative z-10" />
           </a>
         </motion.div>
       </div>

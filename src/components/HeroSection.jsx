@@ -20,9 +20,8 @@ function HeroSection() {
   return (
     <section className="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden pt-32 md:pt-40 lg:pt-32">
       {/* Main Content */}
-      <div className="relative z-10 max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8 flex items-center">
+      <div className="relative z-10 max-w-[1200px] w-full mx-auto p-4 sm:px-6 lg:px-8 flex items-center">
         <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-          
           {/* Left Side: Text */}
           <div className="text-left order-2 lg:order-1 flex flex-col justify-center items-start">
             {/* Trust Badge */}
@@ -41,8 +40,13 @@ function HeroSection() {
               >
                 {/* 3D Gloss Highlight */}
                 <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/30 to-transparent rounded-t-full pointer-events-none"></div>
-                <span className="relative z-10" style={{ textShadow: isDark ? '0 2px 4px rgba(0,0,0,0.5)' : 'none' }}>
-                  Full-Stack Web Developer
+                <span
+                  className="relative z-10"
+                  style={{
+                    textShadow: isDark ? "0 2px 4px rgba(0,0,0,0.5)" : "none",
+                  }}
+                >
+                  Full-Stack Web Developer (MERN)
                 </span>
               </div>
             </motion.div>
@@ -77,7 +81,12 @@ function HeroSection() {
                 isDark ? "text-slate-300" : "text-slate-600"
               }`}
             >
-              A BCA Graduate passionate about modern web experiences, React.js, full-stack ecosystems, and building efficient software solutions.
+              A curious <span className="text-green-600 font-bold">BCA</span>{" "}
+              graduate on an exciting journey through{" "}
+              <span className="text-yellow-600 font-semibold">MCA</span> at{" "}
+              <strong>Galgotias University</strong>, fueled by a genuine love
+              for full-stack development, cutting-edge web technologies, and the
+              endless possibilities of the programming world.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -90,10 +99,22 @@ function HeroSection() {
               <Button href="#" variant="primary" icon={FaAddressCard}>
                 Resume
               </Button>
-              <Button href="https://github.com/Dharamraj82" target="_blank" rel="noreferrer" variant="secondary" icon={VscGithubAlt}>
+              <Button
+                href="https://github.com/Dharamraj82"
+                target="_blank"
+                rel="noreferrer"
+                variant="secondary"
+                icon={VscGithubAlt}
+              >
                 Github
               </Button>
-              <Button href="https://www.linkedin.com/in/dharamraj-prasad-yadav/" target="_blank" rel="noreferrer" variant="linkedin" icon={FaLinkedin}>
+              <Button
+                href="https://www.linkedin.com/in/dharamraj-prasad-yadav/"
+                target="_blank"
+                rel="noreferrer"
+                variant="linkedin"
+                icon={FaLinkedin}
+              >
                 LinkedIn
               </Button>
             </motion.div>
@@ -108,31 +129,35 @@ function HeroSection() {
               className="relative w-72 h-72 sm:w-80 sm:h-80 md:w-[400px] md:h-[400px] flex items-center justify-center"
             >
               {/* Liquid blobs */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary to-accent opacity-60 blur-3xl animate-blob"></div>
-              <div className="absolute inset-4 bg-gradient-to-bl from-secondary to-primary opacity-60 blur-2xl animate-blob" style={{ animationDelay: '2s' }}></div>
-              
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary to-accent opacity-60 blur-3xl animate-blob will-change-transform"></div>
+              <div
+                className="absolute inset-4 bg-gradient-to-bl from-secondary to-primary opacity-60 blur-2xl animate-blob will-change-transform"
+                style={{ animationDelay: "2s" }}
+              ></div>
+
               {/* Profile Image Container */}
               <div className="relative w-full h-full p-2 glass animate-liquid overflow-hidden shadow-2xl">
-                <img 
-                  src="./profileImage.png" 
-                  alt="Dharamraj Prasad Yadav" 
+                <img
+                  src="/profileImage.webp"
+                  alt="Dharamraj Prasad Yadav"
+                  loading="eager"
+                  fetchPriority="high"
                   className="w-full h-full object-cover animate-liquid transition-transform hover:scale-110 duration-700"
                   onError={(e) => {
                     // Fallback gradient if image not found
-                    e.target.onerror = null; 
-                    e.target.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><rect width="400" height="400" fill="%236366f1"/></svg>';
+                    e.target.onerror = null;
+                    e.target.src = "/profileImage.png";
                   }}
                 />
-                
+
                 {/* Glassmorphism overlay on image */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
               </div>
             </motion.div>
           </div>
-
+          
         </div>
       </div>
-
     </section>
   );
 }

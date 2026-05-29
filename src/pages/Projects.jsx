@@ -1,153 +1,51 @@
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { HiCode, HiLightningBolt } from "react-icons/hi";
 import { FaGithub } from "react-icons/fa";
-import {
-  SiReact,
-  SiNodedotjs,
-  SiMongodb,
-  SiExpress,
-  SiTailwindcss,
-  SiJavascript,
-  SiHtml5,
-  SiCss3,
-  SiFramer
-} from "react-icons/si";
-import { RiGeminiFill } from "react-icons/ri";
 import { useTheme } from "../context/ThemeProvider";
-import ProjectCard from "../components/ProjectCard";
+import ProjectCard, { ProjectCardSkeleton } from "../components/ProjectCard";
 
 function Projects() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  // Projects Data
-  const projects = [
-    {
-      id: "project-docbook",
-      title: "DOCBOOK - Doctor Appointment System",
-      description:
-        "A comprehensive doctor-patient appointment booking application built with MERN stack. Features real-time appointment scheduling, user authentication, profile management, and an intuitive dashboard for both doctors and patients.",
-      image: "./projectsImages/docbook.png",
-      category: "Full Stack",
-      techStack: [
-        { name: "React.js", icon: SiReact },
-        { name: "Node.js", icon: SiNodedotjs },
-        { name: "MongoDB", icon: SiMongodb },
-        { name: "Express", icon: SiExpress },
-        { name: "Joi (Validation)", icon: HiCode },
-        { name: "Framer-Motion", icon: SiFramer },
-      ],
-      liveUrl: "https://docbook-frontend-taupe.vercel.app/",
-      githubUrl: "https://github.com/Dharamraj82/DOCBOOK_Frontend",
-      docsUrl:
-        "https://github.com/Dharamraj82/DOCBOOK_Frontend/blob/main/README.md",
-    },
-    {
-      id: "project-portfolio",
-      title: "Personal Portfolio Website",
-      description:
-        "A modern, responsive portfolio website showcasing my projects and skills. Built with React.js and Tailwind CSS, featuring smooth animations, dark mode toggle, and an interactive project showcase with detailed case studies.",
-      image: "./projectsImages/portfolio.png",
-      category: "Frontend and Backend",
-      techStack: [
-        { name: "React.js", icon: SiReact },
-        { name: "Tailwind", icon: SiTailwindcss },
-        { name: "Express", icon: SiExpress },
-        { name: "Framer-Motion", icon: SiFramer },
-        { name: "Nodemailer", icon: HiCode },
-      ],
-      liveUrl: "https://dharamraj-pd-yadav.vercel.app/",
-      githubUrl: "https://github.com/Dharamraj82/Dharamraj-Pd-Yadav",
-      docsUrl: null,
-    },
-    {
-      id: "project-notemaker",
-      title: "AI-Notetaker",
-      description:
-        "AI Notetaker is an AI-powered application that generates structured, clean, and visually clear notes from user prompts and uploaded files.The system is designed with simplicity, clarity, and productivity in mind.",
-      image: "./projectsImages/aINotetaker.png",
-      category: "Full Stack",
-      techStack: [
-        { name: "React.js", icon: SiReact },
-        { name: "Node.js", icon: SiNodedotjs },
-        { name: "MongoDB", icon: SiMongodb },
-        { name: "Express", icon: SiExpress },
-        { name: "Groq", icon: HiCode },
-        { name: "Nodemailer", icon: HiCode },
-      ],
-      liveUrl: "https://ai-notetaker-ten.vercel.app/",
-      githubUrl: "https://github.com/Dharamraj82/AI-Notetaker",
-      docsUrl:
-        "https://github.com/Dharamraj82/AI-Notetaker/blob/main/README.md",
-    },
-    {
-      id: "project-aiCoder",
-      title: "AI Power Coder",
-      description:
-        "AI Power Coder is an intelligent code reviewer and assistant built for developers. It uses advanced AI to analyze, review, and explain code in real time helping developers write better, faster, and more secure code.",
-      image: "./projectsImages/aiCoder.png",
-      category: "Full Stack",
-      techStack: [
-        { name: "React.js", icon: SiReact },
-        { name: "Node.js", icon: SiNodedotjs },
-        { name: "MongoDB", icon: SiMongodb },
-        { name: "Gemini", icon: RiGeminiFill },
-      ],
-      liveUrl: "https://ai-powered-coder-6fk8.vercel.app/",
-      githubUrl: "https://github.com/Dharamraj82/AI-Powered-Coder",
-      docsUrl:
-        "https://github.com/Dharamraj82/AI-Powered-Coder/blob/main/README.md",
-    },
-    {
-      id: "project-taskManager",
-      title: "Employee Task Management System",
-      description:
-        "Built a task management system with role-based access for admins and employees.",
-      image: "./projectsImages/taskManager.png",
-      category: "Frontend",
-      techStack: [
-        { name: "React.js", icon: SiReact },
-        { name: "Tailwind", icon: SiTailwindcss },
-        { name: "LocalStorage", icon: SiJavascript },
-      ],
-      liveUrl: "https://employees-task-management.vercel.app/",
-      githubUrl:
-        "https://github.com/Dharamraj82/Employees-task-management/tree/main",
-      docsUrl: null,
-    },
-    {
-      id: "project-templateCustomization",
-      title: "Build Yourself (Template Customization)",
-      description:
-        "Users browse and choose a template that fits their needs. Users edit the template’s text, images, and other elements to personalize it.",
-      image: "./projectsImages/buildYourslef.png",
-      category: "Full Stack",
-      techStack: [
-        { name: "EJS", icon: HiCode },
-        { name: "MongoDB", icon: SiMongodb },
-        { name: "Express", icon: SiExpress },
-      ],
-      liveUrl: null,
-      githubUrl: "https://github.com/Dharamraj82/Build-Yourself",
-      docsUrl: null,
-    },
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-    {
-      id: "project-landingPage",
-      title: "Watch-LandingPage",
-      description: "",
-      image: "./projectsImages/watch.png",
-      category: "Frontend",
-      techStack: [
-        { name: "HTML", icon: SiHtml5 },
-        { name: "CSS", icon: SiCss3 },
-        { name: "Javascript", icon: SiJavascript },
-      ],
-      liveUrl: "https://dharamraj82.github.io/Watch-LandingPage/",
-      githubUrl: "https://github.com/Dharamraj82/Watch-LandingPage",
-      docsUrl: null,
-    },
-  ];
+  const fetchProjects = async (pageNumber) => {
+    try {
+      if (pageNumber === 1) setLoading(true);
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/projects?page=${pageNumber}&limit=10`);
+      const data = await res.json();
+      
+      if (res.ok) {
+        const arr = data.data || [];
+        if (pageNumber === 1) {
+          setProjects(arr);
+        } else {
+          setProjects(prev => [...prev, ...arr]);
+        }
+        setHasMore(pageNumber * 10 < (data.total || 0));
+      }
+    } catch (error) {
+      console.error("Failed to fetch projects", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProjects(1);
+  }, []);
+
+  const handleLoadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchProjects(nextPage);
+  };
+
 
   return (
     <section
@@ -240,10 +138,33 @@ function Projects() {
 
         {/* Projects Grid */}
         <div className="flex flex-col gap-16 max-w-6xl mx-auto">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
+          {loading && page === 1 ? (
+            Array.from({ length: 4 }).map((_, index) => (
+              <ProjectCardSkeleton key={`skeleton-${index}`} index={index} />
+            ))
+          ) : (
+            projects.map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} />
+            ))
+          )}
         </div>
+        
+        {/* Load More Button */}
+        {hasMore && (
+          <div className="flex justify-center mt-12">
+            <button
+              onClick={handleLoadMore}
+              disabled={loading}
+              className={`px-8 py-3 rounded-full font-bold transition-all duration-300 ${
+                isDark
+                  ? "bg-gray-800 text-white hover:bg-gray-700 disabled:opacity-50"
+                  : "bg-gray-200 text-gray-800 hover:bg-gray-300 disabled:opacity-50"
+              }`}
+            >
+              {loading ? "Loading..." : "Load More"}
+            </button>
+          </div>
+        )}
       </div>
       <motion.div
         initial={{ opacity: 0, y: 30 }}

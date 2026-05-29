@@ -21,15 +21,25 @@ function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Prevent body scroll when mobile menu is open
+  // Prevent body scroll and hide main content when mobile menu is open
   useEffect(() => {
+    const mainElement = document.querySelector('main');
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      if (mainElement) {
+        mainElement.classList.add('opacity-0', 'pointer-events-none');
+      }
     } else {
       document.body.style.overflow = "unset";
+      if (mainElement) {
+        mainElement.classList.remove('opacity-0', 'pointer-events-none');
+      }
     }
     return () => {
       document.body.style.overflow = "unset";
+      if (mainElement) {
+        mainElement.classList.remove('opacity-0', 'pointer-events-none');
+      }
     };
   }, [isOpen]);
 
@@ -206,31 +216,40 @@ function Header() {
               transition={{ type: "spring", damping: 28, stiffness: 200 }}
               className={`fixed top-0 right-0 bottom-0 z-50 w-[85%] max-w-[320px] md:hidden shadow-[-20px_0_40px_rgba(0,0,0,0.3)] border-l ${
                 isDark
-                  ? "bg-slate-900/80 border-white/10"
-                  : "bg-white/80 border-white/40"
-              } backdrop-blur-2xl rounded-l-[2.5rem]`}
+                  ? "bg-slate-900/60 border-white/10"
+                  : "bg-white/60 border-white/40"
+              } backdrop-blur-2xl rounded-l-[2.5rem] overflow-hidden`}
             >
-              {/* Mobile Menu Header */}
-              <div className="flex justify-between items-center p-8 pb-4">
-                <h2 className="text-xl font-black uppercase tracking-widest bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                  Navigation
-                </h2>
-                <motion.button
-                  whileTap={{ scale: 0.9, rotate: 90 }}
-                  onClick={() => setIsOpen(false)}
-                  className={`p-2.5 rounded-full transition-all duration-300 ${
-                    isDark
-                      ? "bg-white/5 text-white hover:bg-white/15"
-                      : "bg-black/5 text-gray-900 hover:bg-black/10"
-                  }`}
-                  aria-label="Close menu"
-                >
-                  <HiX size={20} />
-                </motion.button>
+              {/* Liquid Glass Background Effect */}
+              <div className="absolute inset-0 z-0 pointer-events-none opacity-60">
+                <div className="absolute -top-24 -right-24 w-64 h-64 bg-gradient-to-br from-primary to-accent rounded-full blur-3xl animate-blob will-change-transform opacity-60"></div>
+                <div className="absolute top-1/2 -left-24 w-72 h-72 bg-gradient-to-tr from-secondary to-primary rounded-full blur-3xl animate-blob will-change-transform opacity-60" style={{ animationDelay: '2s' }}></div>
+                <div className="absolute -bottom-24 right-0 w-56 h-56 bg-gradient-to-tl from-accent to-secondary rounded-full blur-3xl animate-blob will-change-transform opacity-60" style={{ animationDelay: '4s' }}></div>
               </div>
 
-              {/* Mobile Menu Links */}
-              <div className="flex flex-col h-[calc(100%-100px)] justify-between px-8 pb-8 pt-4">
+              {/* Content Container (to stay above liquid background) */}
+              <div className="relative z-10 flex flex-col h-full">
+                {/* Mobile Menu Header */}
+                <div className="flex justify-between items-center p-8 pb-4">
+                  <h2 className="text-xl font-black uppercase tracking-widest bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    Navigation
+                  </h2>
+                  <motion.button
+                    whileTap={{ scale: 0.9, rotate: 90 }}
+                    onClick={() => setIsOpen(false)}
+                    className={`p-2.5 rounded-full transition-all duration-300 ${
+                      isDark
+                        ? "bg-white/10 text-white hover:bg-white/20"
+                        : "bg-black/5 text-gray-900 hover:bg-black/10"
+                    }`}
+                    aria-label="Close menu"
+                  >
+                    <HiX size={20} />
+                  </motion.button>
+                </div>
+
+                {/* Mobile Menu Links */}
+                <div className="flex flex-col h-[calc(100%-100px)] justify-between px-8 pb-8 pt-4">
                 <div className="flex flex-col gap-2">
                   {navLinks.map((link, index) => (
                     <motion.div
@@ -294,6 +313,7 @@ function Header() {
                     </span>
                   </a>
                 </motion.div>
+              </div>
               </div>
             </motion.div>
           </>

@@ -12,7 +12,9 @@ function Home() {
       <HeroSection />
       <AboutSection />
       <ProjectsSection />
-      <Certifications />
+      <section id="certifications">
+        <Certifications isHomePage={true} />
+      </section>
       <BlogSection/>
       <ContactSection/>
     </div>

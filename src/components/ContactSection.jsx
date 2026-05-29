@@ -131,7 +131,7 @@ const handleSubmit = async (e) => {
   return (
     <section
       id="contact"
-      className={`relative py-12 md:py-20`}
+      className={`relative py-12`}
     >
       <div className="relative max-w-[1200px] w-full mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}

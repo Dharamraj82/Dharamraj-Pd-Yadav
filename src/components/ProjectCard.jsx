@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { FiGithub, FiExternalLink, FiFileText, FiChevronDown } from "react-icons/fi";
+import * as SiIcons from "react-icons/si";
+import * as FaIcons from "react-icons/fa";
 import { useTheme } from "../context/ThemeProvider";
 import { useState } from "react";
 
@@ -8,6 +10,9 @@ function ProjectCard({ project, index }) {
   const isDark = theme === "dark";
   const isEven = index % 2 === 0;
   const [isExpanded, setIsExpanded] = useState(false);
+  const hasImage = !!project.image;
+  const techList = project.project_tech ? project.project_tech.map(pt => pt.tech).filter(Boolean) : [];
+  const hasTech = techList.length > 0;
 
   return (
     <motion.div
@@ -26,33 +31,39 @@ function ProjectCard({ project, index }) {
       }`}
     >
       {/* Project Image Section */}
-      <div className="relative overflow-hidden w-full md:w-5/12 shrink-0 h-56 md:h-auto">
-        <div className="w-full h-full">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full object-cover object-center"
-          />
-        </div>
+      {hasImage && (
+        <div className="relative overflow-hidden w-full md:w-5/12 shrink-0 h-56 md:h-auto">
+          <div className="w-full h-full">
+            <img
+              src={project.image}
+              alt={project.title || "Project Image"}
+              className="w-full h-full object-cover object-center"
+            />
+          </div>
 
-        {/* Category Label overlay on image for mobile, hidden on desktop */}
-        <div className="absolute top-4 left-4 md:hidden">
-          <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white border border-white/20">
-            {project.category}
-          </span>
+          {/* Type Label overlay on image for mobile, hidden on desktop */}
+          {project.type && (
+            <div className="absolute top-4 left-4 md:hidden">
+              <span className="px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-black/60 backdrop-blur-md text-white border border-white/20">
+                {project.type}
+              </span>
+            </div>
+          )}
         </div>
-      </div>
+      )}
 
       {/* Project Text Content */}
-      <div className={`p-6 md:p-8 flex flex-col justify-center grow w-full md:w-7/12 relative z-0`}>
+      <div className={`p-6 md:p-8 flex flex-col justify-center grow w-full ${hasImage ? "md:w-7/12" : "md:w-full"} relative z-0`}>
         
-        {/* Category Label (Desktop) */}
-        <div className="hidden md:flex items-center gap-2 mb-3">
-          <span className="w-6 h-[2px] bg-primary rounded-full"></span>
-          <span className="text-primary font-bold text-[11px] tracking-widest uppercase">
-            {project.category}
-          </span>
-        </div>
+        {/* Type Label (Desktop) */}
+        {project.type && (
+          <div className="hidden md:flex items-center gap-2 mb-3">
+            <span className="w-6 h-[2px] bg-primary rounded-full"></span>
+            <span className="text-primary font-bold text-[11px] tracking-widest uppercase">
+              {project.type}
+            </span>
+          </div>
+        )}
 
         {/* Title */}
         <h3 className={`text-xl md:text-2xl lg:text-3xl font-bold mb-3 transition-colors duration-300 ${
@@ -84,29 +95,35 @@ function ProjectCard({ project, index }) {
         </div>
 
         {/* Tech Stack Pills */}
-        <div className="mb-6">
-          <div className="flex flex-wrap gap-2">
-            {project.techStack.map((tech, techIndex) => (
-              <span
-                key={techIndex}
-                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all duration-300 ${
-                  isDark
-                    ? "bg-white/5 text-slate-300 border border-white/10"
-                    : "bg-slate-100 text-slate-600 border border-slate-200"
-                }`}
-              >
-                {tech.icon && <tech.icon size={12} className={isDark ? 'opacity-70' : 'opacity-60'} />}
-                {tech.name}
-              </span>
-            ))}
+        {hasTech && (
+          <div className="mb-6">
+            <div className="flex flex-wrap gap-2">
+              {techList.map((tech, techIndex) => {
+                const IconComponent = SiIcons[tech.icon_name] || FaIcons[tech.icon_name];
+                return (
+                  <span
+                    key={techIndex}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[12px] font-medium transition-all duration-300 cursor-default ${
+                      isDark
+                        ? "bg-[#111827] text-slate-300 border border-[#1E293B] hover:border-primary/50"
+                        : "bg-white text-slate-600 border border-slate-200 hover:border-primary/40"
+                    }`}
+                    style={{ borderColor: tech.color ? `${tech.color}40` : undefined }}
+                  >
+                    {IconComponent && <IconComponent size={14} style={{ color: tech.color || undefined }} />}
+                    {tech.skill}
+                  </span>
+                );
+              })}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Action Buttons with 3D Effect */}
         <div className="mt-auto flex items-center gap-3">
-          {project.liveUrl && (
+          {project.live_url && (
             <motion.a
-              href={project.liveUrl}
+              href={project.live_url}
               target="_blank"
               rel="noopener noreferrer"
               className={`group relative overflow-hidden flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none ${
@@ -122,9 +139,9 @@ function ProjectCard({ project, index }) {
             </motion.a>
           )}
           
-          {project.githubUrl && (
+          {project.github_url && (
             <motion.a
-              href={project.githubUrl}
+              href={project.github_url}
               target="_blank"
               rel="noopener noreferrer"
               className={`group relative overflow-hidden flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none ${
@@ -140,9 +157,9 @@ function ProjectCard({ project, index }) {
             </motion.a>
           )}
 
-          {project.docsUrl && (
+          {project.docs_url && (
             <motion.a
-              href={project.docsUrl}
+              href={project.docs_url}
               target="_blank"
               rel="noopener noreferrer"
               className={`group relative overflow-hidden flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all duration-300 hover:translate-y-[2px] active:translate-y-[4px] active:shadow-none ${
@@ -165,3 +182,47 @@ function ProjectCard({ project, index }) {
 }
 
 export default ProjectCard;
+
+export function ProjectCardSkeleton({ index = 0 }) {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+  const isEven = index % 2 === 0;
+
+  return (
+    <div
+      className={`group relative flex flex-col ${
+        isEven ? "md:flex-row" : "md:flex-row-reverse"
+      } w-full overflow-hidden rounded-3xl ${
+        isDark ? "bg-[#111111] border border-white/5" : "bg-white border border-slate-200"
+      } animate-pulse`}
+    >
+      <div className="relative overflow-hidden w-full md:w-5/12 shrink-0 h-56 md:h-auto">
+        <div className={`w-full h-full ${isDark ? "bg-white/5" : "bg-slate-200"}`}></div>
+      </div>
+      
+      <div className="p-6 md:p-8 flex flex-col justify-center grow w-full md:w-7/12 relative z-0">
+        <div className="hidden md:flex items-center gap-2 mb-3">
+          <div className={`w-6 h-[2px] rounded-full ${isDark ? "bg-white/10" : "bg-slate-300"}`}></div>
+          <div className={`h-3 w-16 rounded ${isDark ? "bg-white/10" : "bg-slate-300"}`}></div>
+        </div>
+        
+        <div className={`h-8 w-3/4 rounded mb-4 ${isDark ? "bg-white/10" : "bg-slate-300"}`}></div>
+        
+        <div className="space-y-2 mb-6">
+          <div className={`h-4 w-full rounded ${isDark ? "bg-white/5" : "bg-slate-200"}`}></div>
+          <div className={`h-4 w-5/6 rounded ${isDark ? "bg-white/5" : "bg-slate-200"}`}></div>
+        </div>
+        
+        <div className="mb-6 flex gap-2">
+          <div className={`h-6 w-16 rounded-md ${isDark ? "bg-white/10" : "bg-slate-200"}`}></div>
+          <div className={`h-6 w-20 rounded-md ${isDark ? "bg-white/10" : "bg-slate-200"}`}></div>
+        </div>
+        
+        <div className="mt-auto flex gap-3">
+          <div className={`h-10 w-32 rounded-lg ${isDark ? "bg-white/10" : "bg-slate-300"}`}></div>
+          <div className={`h-10 w-24 rounded-lg ${isDark ? "bg-white/10" : "bg-slate-300"}`}></div>
+        </div>
+      </div>
+    </div>
+  );
+}

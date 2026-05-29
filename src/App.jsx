@@ -86,7 +86,7 @@ import { motion } from "framer-motion";
 import { ThemeProvider, useTheme } from "./context/ThemeProvider";
 import Header from "./components/Header";
 import useLenis from "./context/useLenis";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Footer from "./components/Footer";
 
 import BackgroundAnimation from "./components/BackgroundAnimation";
@@ -99,6 +99,14 @@ const Blogs = lazy(() => import("./pages/Blog"));
 const About = lazy(() => import("./pages/About"));
 const Certifications = lazy(() => import("./pages/Certifications"));
 const Contact = lazy(() => import("./pages/Contact"));
+const AdminLogin = lazy(() => import("./pages/admin/AdminLogin"));
+const AdminLayout = lazy(() => import("./components/admin/AdminLayout"));
+const AdminHome = lazy(() => import("./pages/admin/AdminHome"));
+const AdminProjects = lazy(() => import("./pages/admin/AdminProjects"));
+const AdminTech = lazy(() => import("./pages/admin/AdminTech"));
+const AdminBlogs = lazy(() => import("./pages/admin/AdminBlogs"));
+const AdminCertifications = lazy(() => import("./pages/admin/AdminCertifications"));
+const AdminUpdates = lazy(() => import("./pages/admin/AdminUpdates"));
 
 // Fallback loader component (Hero Skeleton)
 const PageLoader = () => {
@@ -139,7 +147,28 @@ const PageLoader = () => {
 function AppContent() {
   useLenis();
   const { theme } = useTheme();
+  const location = useLocation();
   const isDark = theme === "dark";
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
+  if (isAdminRoute) {
+    return (
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminLayout />}>
+            <Route index element={<AdminHome />} />
+            <Route path="projects" element={<AdminProjects />} />
+            <Route path="tech" element={<AdminTech />} />
+            <Route path="blogs" element={<AdminBlogs />} />
+            <Route path="certifications" element={<AdminCertifications />} />
+            <Route path="updates" element={<AdminUpdates />} />
+          </Route>
+          <Route path="/*" element={<Page404 />} />
+        </Routes>
+      </Suspense>
+    );
+  }
 
   return (
     <div className={`min-h-screen transition-colors duration-500 ${isDark ? 'bg-darkBg text-white' : 'bg-slate-50 text-slate-900'}`}>

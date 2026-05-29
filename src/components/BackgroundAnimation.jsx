@@ -7,9 +7,9 @@ const pick = (...arr) => arr[Math.floor(Math.random() * arr.length)];
 
 // Soft blurred background blobs — random positions every reload
 const bgBlobs = [
-  { id: 1, color: "linear-gradient(to right, #3b82f6, #6366f1)", w: "80vw", h: "60vh", top: `${r(-20, 20)}%`, left: `${r(-30, 10)}%`, rotate: r(20, 50), duration: r(22, 30), delay: 0,   moveY: [0, r(60,100), 0], moveX: [0, r(-70,-30), 0] },
-  { id: 2, color: "linear-gradient(to right, #a855f7, #d946ef)", w: "70vw", h: "50vh", top: `${r(40, 70)}%`, left: `${r(30, 60)}%`, rotate: r(-40, -10), duration: r(28, 36), delay: r(1,3), moveY: [0, r(-100,-60), 0], moveX: [0, r(40,80), 0] },
-  { id: 3, color: "linear-gradient(to right, #22d3ee, #2dd4bf)", w: "60vw", h: "55vh", top: `${r(20, 50)}%`, left: `${r(50, 80)}%`, rotate: r(5, 25),  duration: r(18, 26), delay: r(3,6), moveY: [0, r(30,70), 0],  moveX: [0, r(-60,-20), 0] },
+  { id: 1, color: "linear-gradient(to right, #3b82f6, #6366f1)", w: "80vw", h: "60vh", top: `${r(-20, 20)}%`, left: `${r(-30, 10)}%`, rotate: r(20, 50), duration: r(22, 30), delay: 0,       moveY: [0, r(60,100), 0],   moveX: [0, r(-70,-30), 0] },
+  { id: 2, color: "linear-gradient(to right, #a855f7, #d946ef)", w: "70vw", h: "50vh", top: `${r(40, 70)}%`, left: `${r(30, 60)}%`, rotate: r(-40,-10), duration: r(28, 36), delay: r(1,3),   moveY: [0, r(-100,-60), 0], moveX: [0, r(40,80), 0] },
+  { id: 3, color: "linear-gradient(to right, #22d3ee, #2dd4bf)", w: "60vw", h: "55vh", top: `${r(20, 50)}%`, left: `${r(50, 80)}%`, rotate: r(5,  25),  duration: r(18, 26), delay: r(3,6),   moveY: [0, r(30,70), 0],    moveX: [0, r(-60,-20), 0] },
 ];
 
 // Wave ribbon configs — colour pairs to pick from
@@ -49,7 +49,7 @@ export default function BackgroundAnimation() {
 
   return (
     <>
-      {/* BACKGROUND LAYER (Behind everything) */}
+      {/* BACKGROUND LAYER — glowing blurred blobs */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         {bgBlobs.map((blob) => (
           <motion.div
@@ -57,12 +57,15 @@ export default function BackgroundAnimation() {
             className={`absolute rounded-full blur-[100px] ${
               isDark ? "opacity-[0.12]" : "opacity-[0.2]"
             }`}
-            style={{ 
-              top: blob.top, 
+            style={{
+              top: blob.top,
               left: blob.left,
               width: blob.w,
               height: blob.h,
-              backgroundImage: blob.color
+              backgroundImage: blob.color,
+              // GPU layer promotion — keeps animation off main thread
+              willChange: "transform",
+              transform: "translateZ(0)",
             }}
             animate={{
               y: blob.moveY,
@@ -79,19 +82,21 @@ export default function BackgroundAnimation() {
         ))}
       </div>
 
-      {/* FOREGROUND LAYER (Floating over the UI elements like a 3D effect) */}
+      {/* FOREGROUND LAYER — floating ribbon waves */}
       <div className="fixed inset-0 z-[100] pointer-events-none overflow-hidden">
         {fgWaves.map((wave) => (
           <motion.svg
             key={wave.id}
             className="absolute w-[150vw] h-auto"
-            style={{ 
-              top: wave.top, 
+            style={{
+              top: wave.top,
               left: wave.left,
               opacity: isDark ? wave.opacity : wave.opacity * 1.4,
               transformOrigin: "center center",
               color: wave.color1,
               filter: `drop-shadow(0 0 6px ${wave.color1}80)`,
+              // GPU layer promotion
+              willChange: "transform",
             }}
             initial={{ scale: wave.scale, rotate: wave.rotate }}
             animate={{
@@ -136,4 +141,3 @@ export default function BackgroundAnimation() {
     </>
   );
 }
-
