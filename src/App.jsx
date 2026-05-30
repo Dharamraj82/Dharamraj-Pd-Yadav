@@ -88,6 +88,7 @@ import Header from "./components/Header";
 import useLenis from "./context/useLenis";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Footer from "./components/Footer";
+import CookieConsent from "./components/CookieConsent";
 
 import BackgroundAnimation from "./components/BackgroundAnimation";
 
@@ -196,6 +197,7 @@ function AppContent() {
             </Suspense>
           </main>
           <Footer />
+          <CookieConsent />
         </div>
       </section>
     </div>
