@@ -106,19 +106,19 @@ function AboutSection() {
 
   // Coding Profiles
   const codingProfiles = [
-    { platform: "LeetCode", icon: SiLeetcode, color: "#FFA116", link: "#" },
+    { platform: "LeetCode", icon: SiLeetcode, color: "#FFA116", link: "https://leetcode.com/u/Dharamraj82/" },
     {
       platform: "CodeChef",
       icon: SiCodechef,
       color: isDark ? "#FFFFFF" : "#5B4638",
-      link: "#",
+      link: "https://www.codechef.com/users/dharamraj82",
     },
-    { platform: "HackerRank", icon: SiHackerrank, color: "#00EA64", link: "#" },
+    { platform: "HackerRank", icon: SiHackerrank, color: "#00EA64", link: "https://www.hackerrank.com/profile/dpy9572" },
     {
       platform: "GeeksforGeeks",
       icon: SiGeeksforgeeks,
       color: "#2F8D46",
-      link: "#",
+      link: "https://www.geeksforgeeks.org/profile/dharamraj_pd_yadav",
     },
   ];
 
@@ -294,7 +294,7 @@ function AboutSection() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.8 }}
             className="w-full mt-16 mb-8"
           >
@@ -331,7 +331,7 @@ function AboutSection() {
                 <motion.div
                   initial={{ opacity: 0, y: -30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.1 }}
                   className="flex flex-col items-center group cursor-default"
                   style={{ minHeight: "360px" }}
@@ -392,7 +392,7 @@ function AboutSection() {
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.2 }}
                   className="flex flex-col items-center group cursor-default"
                   style={{ minHeight: "360px" }}
@@ -458,7 +458,7 @@ function AboutSection() {
                 <motion.div
                   initial={{ opacity: 0, y: -30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.3 }}
                   className="flex flex-col items-center group cursor-default"
                   style={{ minHeight: "360px" }}
@@ -526,7 +526,7 @@ function AboutSection() {
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: 0.4 }}
                   className="flex flex-col items-center group cursor-default"
                   style={{ minHeight: "360px" }}
@@ -641,7 +641,7 @@ function AboutSection() {
                   key={i}
                   initial={{ opacity: 0, x: 24 }}
                   whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: item.delay }}
                   className="relative flex items-start gap-4 pb-8 last:pb-0 group"
                 >

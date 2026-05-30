@@ -94,7 +94,6 @@ export default function BackgroundAnimation() {
               opacity: isDark ? wave.opacity : wave.opacity * 1.4,
               transformOrigin: "center center",
               color: wave.color1,
-              filter: `drop-shadow(0 0 6px ${wave.color1}80)`,
               // GPU layer promotion
               willChange: "transform",
             }}
@@ -113,6 +112,24 @@ export default function BackgroundAnimation() {
             viewBox="0 0 2000 320"
             xmlns="http://www.w3.org/2000/svg"
           >
+            {/* Outer Glow (Double-path stroke trick) */}
+            <motion.path
+              initial={{ pathLength: 0.2, pathOffset: 0 }}
+              animate={{ pathOffset: [0, 1] }}
+              transition={{
+                duration: wave.duration,
+                repeat: Infinity,
+                ease: "linear",
+                delay: wave.delay,
+              }}
+              fill="none"
+              stroke={`url(#${wave.gradientId})`}
+              strokeWidth="12"
+              strokeLinecap="round"
+              style={{ opacity: 0.12 }}
+              d="M0,192 C150,100 250,280 400,192 C550,100 650,280 800,192 C950,100 1050,280 1200,192 C1350,100 1450,280 1600,192 C1750,100 1850,280 2000,192"
+            />
+            {/* Inner Core */}
             <motion.path
               initial={{ pathLength: 0.2, pathOffset: 0 }}
               animate={{ pathOffset: [0, 1] }}
